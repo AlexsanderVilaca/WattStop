@@ -20,11 +20,34 @@ namespace APIClient.Controllers
         [ProducesResponseType(200,Type=typeof(List<PontoRecargaModel>))]
         public IActionResult GetPontosRecarga()
         {
-            var pontosRecarga = _pontoRecargaRepository.GetPontosRecarga();
+            //var pontosRecarga = _pontoRecargaRepository.GetPontosRecarga();
+            var pontosRecarga = _mapper.Map<List<EmpresaDTO>>(_pontoRecargaRepository.GetPontosRecarga());
             if (!ModelState.IsValid)
-                return BadRequest();
+                return BadRequest(ModelState);
 
             return Ok(pontosRecarga);
+        }
+
+        [HttpPost("CreatePontoRecarga")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreatePontosRecarga([FromBody] PontoRecargaDTO pontoCreate) {
+
+            ModelState.Clear();
+            if (pontoCreate == null)
+                return BadRequest(ModelState);
+
+            if (pontoCreate.Id == null || pontoCreate.Id == Guid.Empty)
+                pontoCreate.Id = Guid.NewGuid();
+
+            EmpresaModel empresaMap = _mapper.Map<EmpresaDTO, EmpresaModel>(pontoCreate);
+
+            if (!_empresaRepository.CreatePontosRecarga(empresaMap))
+            {
+                ModelState.AddModelError("", "Algo deu errado na hora de salvar");
+                return StatusCode(500, ModelState);
+            }
+            return Ok();
         }
     }
 }
