@@ -1,4 +1,5 @@
 ﻿using APIClient.Data;
+using APIClient.DTO;
 using APIClient.Interfaces;
 using APIClient.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -20,8 +21,8 @@ namespace APIClient.Controllers
         [ProducesResponseType(200,Type=typeof(List<PontoRecargaModel>))]
         public IActionResult GetPontosRecarga()
         {
-            //var pontosRecarga = _pontoRecargaRepository.GetPontosRecarga();
-            var pontosRecarga = _mapper.Map<List<EmpresaDTO>>(_pontoRecargaRepository.GetPontosRecarga());
+            var pontosRecarga = _pontoRecargaRepository.GetPontosRecarga();
+            //var pontosRecarga = _mapper.Map<List<EmpresaDTO>>(_pontoRecargaRepository.GetPontosRecarga());
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 

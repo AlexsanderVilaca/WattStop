@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using APIClient.Data;
+using APIClient.DTO;
+using APIClient.Interfaces;
+using APIClient.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,36 +14,36 @@ namespace APIClient.Controllers
     {
         private readonly DataContext _context;
         private readonly IHistoricoRepository _historicoRepository;
-        public HistoricoPontoRecargaController(IQRCodeRepository historicoRepository, DataContext context)
+        public HistoricoPontoRecargaController(IHistoricoRepository historicoRepository, DataContext context)
         {
             _historicoRepository = historicoRepository;
             _context = context;
         }
 
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof(List<PontoRecargaModel>))]
-        public IActionResult GetQRCodes()
+        [ProducesResponseType(200, Type = typeof(List<HistoricoPontoRecargaModel>))]
+        public IActionResult GetHistoricoPontosRecarga()
         {
-            //var qrCodes = _qrCodeRepository.GetQRCodes();
-            var qrCodes = _mapper.Map<List<EmpresaDTO>>(_qrCodeRepository.GetQRCodes());
+            var historicoPontosRecarga = _historicoRepository.GetHistoricoPontosRecarga();
+            //var qrCodes = _mapper.Map<List<EmpresaDTO>>(_qrCodeRepository.GetQRCodes());
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            return Ok(qrCodes);
+            return Ok(historicoPontosRecarga);
         }
 
         [HttpPost("CreateQRCode")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CreateQRCodes([FromBody] QrCodeDTO qrCodeCreate)
+        public IActionResult CreateQRCodes([FromBody] HistoricoPontoRecargaDTO historicoPontoCreate)
         {
 
             ModelState.Clear();
-            if (pontoCreate == null)
+            if (historicoPontoCreate == null)
                 return BadRequest(ModelState);
 
-            if (qrCodeCreate.Id == null || qrCodeCreate.Id == Guid.Empty)
-                qrCodeCreate.Id = Guid.NewGuid();
+            if (historicoPontoCreate.Id == null || historicoPontoCreate.Id == Guid.Empty)
+                historicoPontoCreate.Id = Guid.NewGuid();
 
             EmpresaModel empresaMap = _mapper.Map<EmpresaDTO, EmpresaModel>(qrCodeCreate);
 
