@@ -23,7 +23,8 @@ jobs:
           include-prerelease: true
 
       - name: Build with dotnet
-        run: dotnet build --configuration Release --project ./APIClient.csproj
+        working-directory: ./WattStop
+        run: dotnet build --configuration Release
 
       - name: dotnet publish
         run: dotnet publish -c Release -o ./WattStop
