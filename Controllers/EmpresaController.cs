@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace APIClient.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class EmpresaController : Controller
     {
@@ -19,7 +19,7 @@ namespace APIClient.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("GetEmpresas")]
+        [HttpGet]
         [ProducesResponseType(200, Type = typeof(List<EmpresaModel>))]
         [ProducesResponseType(400)]
         public IActionResult GetEmpresas()
