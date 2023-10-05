@@ -2,6 +2,7 @@
 using APIClient.DTO;
 using APIClient.Interfaces;
 using APIClient.Models;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APIClient.Controllers
@@ -10,14 +11,14 @@ namespace APIClient.Controllers
     [ApiController]
     public class PontoRecargaController : Controller
     {
-        private readonly DataContext _context;
         private readonly IPontoRecargaRepository _pontoRecargaRepository;
-        public PontoRecargaController(IPontoRecargaRepository pontoRecargaRepository, DataContext context) {
+        private readonly IMapper _mapper;
+        public PontoRecargaController(IPontoRecargaRepository pontoRecargaRepository, IMapper mapper) {
             _pontoRecargaRepository = pontoRecargaRepository;
-            _context = context;
+            _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet("GetPontosRecarga")]
         [ProducesResponseType(200,Type=typeof(List<PontoRecargaModel>))]
         public IActionResult GetPontosRecarga()
         {
@@ -34,12 +35,12 @@ namespace APIClient.Controllers
         [ProducesResponseType(400)]
         public IActionResult CreatePontosRecarga([FromBody] PontoRecargaDTO pontoCreate) {
 
-            ModelState.Clear();
-            if (pontoCreate == null)
-                return BadRequest(ModelState);
+            //ModelState.Clear();
+            //if (pontoCreate == null)
+            //    return BadRequest(ModelState);
 
-            if (pontoCreate.Id == null || pontoCreate.Id == Guid.Empty)
-                pontoCreate.Id = Guid.NewGuid();
+            //if (pontoCreate.Id == null || pontoCreate.Id == Guid.Empty)
+            //    pontoCreate.Id = Guid.NewGuid();
 
            // EmpresaModel empresaMap = _mapper.Map<EmpresaDTO, EmpresaModel>(pontoCreate);
 

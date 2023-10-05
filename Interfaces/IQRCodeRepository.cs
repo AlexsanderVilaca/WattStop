@@ -4,9 +4,10 @@ namespace APIClient.Interfaces
 {
     public interface IQRCodeRepository
     {
-        QrCodeModel Conteudo();
-        QrCodeModel GetQRCodes();
+        List<QrCodeModel> GetQrCodes();
+        QrCodeModel GetQRCode(Guid id);
 
-        bool CreateQRCodes(QrCodeModel model);
+        bool CreateQRCode(QrCodeModel model);
+        bool Save();
     }
 }

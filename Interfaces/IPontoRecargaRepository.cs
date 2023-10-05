@@ -7,6 +7,7 @@ namespace APIClient.Interfaces
     {
         List<PontoRecargaModel> GetPontosRecarga();
         PontoRecargaModel GetPontoRecarga(Guid id);
-        bool CreatePontoRecarga(PontoRecargaDTO pontoRecarga);
+        bool CreatePontoRecarga(PontoRecargaModel pontoRecarga);
+        bool Save();
     }
 }

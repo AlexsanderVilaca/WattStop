@@ -1,5 +1,6 @@
 ﻿using APIClient.Data;
 using APIClient.Interfaces;
+using APIClient.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -14,12 +15,10 @@ namespace APIClient.Controllers
     public class AvaliacaoController : Controller
     {
 
-        private readonly DataContext _context;
         private readonly IMapper _mapper;
-        public AvaliacaoController(IMapper mapper, DataContext context)
+        public AvaliacaoController(IMapper mapper)
         {
             _mapper= mapper;
-            _context = context;
         }
     }
 }

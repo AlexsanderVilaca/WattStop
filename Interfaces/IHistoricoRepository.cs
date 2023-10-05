@@ -7,6 +7,7 @@ namespace APIClient.Interfaces
     {
         List<HistoricoPontoRecargaModel> GetHistoricoPontosRecarga();
         HistoricoPontoRecargaModel GetHistoricoPontoRecarga(Guid id);
-        bool CreateHistoricoPontoRecarga(HistoricoPontoRecargaDTO historicoPontoRecarga);
+        bool CreateHistoricoPontoRecarga(HistoricoPontoRecargaModel historicoPontoRecarga);
+        bool Save();
     }
 }

@@ -2,6 +2,7 @@
 using APIClient.DTO;
 using APIClient.Interfaces;
 using APIClient.Models;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -14,15 +15,15 @@ namespace APIClient.Controllers
     [Route("api/[controller]")]
     public class HistoricoPontoRecargaController : Controller
     {
-        private readonly DataContext _context;
         private readonly IHistoricoRepository _historicoRepository;
-        public HistoricoPontoRecargaController(IHistoricoRepository historicoRepository, DataContext context)
+        private readonly IMapper _mapper;
+        public HistoricoPontoRecargaController(IHistoricoRepository historicoRepository, IMapper mapper)
         {
             _historicoRepository = historicoRepository;
-            _context = context;
+            _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet("GetHistorico")]
         [ProducesResponseType(200, Type = typeof(List<HistoricoPontoRecargaModel>))]
         public IActionResult GetHistoricoPontosRecarga()
         {
@@ -34,10 +35,10 @@ namespace APIClient.Controllers
             return Ok();
         }
 
-        [HttpPost("CreateQRCode")]
+        [HttpPost("CreateHistorico")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CreateQRCodes([FromBody] HistoricoPontoRecargaDTO historicoPontoCreate)
+        public IActionResult CreateHistoricoPontoRecarga([FromBody] HistoricoPontoRecargaDTO historicoPontoCreate)
         {
 
             //ModelState.Clear();

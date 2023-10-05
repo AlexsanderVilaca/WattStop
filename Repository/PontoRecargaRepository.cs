@@ -13,9 +13,10 @@ namespace APIClient.Repository
             _context = context;
         }
 
-        public bool CreatePontoRecarga(PontoRecargaDTO pontoRecarga)
+        public bool CreatePontoRecarga(PontoRecargaModel pontoRecarga)
         {
-            throw new NotImplementedException();
+            _context.PontoRecarga.Add(pontoRecarga);
+            return Save();
         }
 
         public PontoRecargaModel GetPontoRecarga(Guid id)
@@ -26,6 +27,12 @@ namespace APIClient.Repository
         public List<PontoRecargaModel> GetPontosRecarga()
         {
             return _context.PontoRecarga.OrderBy(p=>p.Id).ToList();
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
         }
     }
 }
