@@ -19,16 +19,16 @@ namespace APIClient.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet("GetEmpresas")]
         [ProducesResponseType(200, Type = typeof(List<EmpresaModel>))]
         [ProducesResponseType(400)]
         public IActionResult GetEmpresas()
         {
-            var empresas = _mapper.Map<List<EmpresaDTO>>(_empresaRepository.GetEmpresas());
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            //var empresas = _mapper.Map<List<EmpresaDTO>>(_empresaRepository.GetEmpresas());
+           // if (!ModelState.IsValid)
+           //     return BadRequest(ModelState);
 
-            return Ok(empresas);
+            return Ok();
         }
 
         [HttpPost("CreateEmpresa")]

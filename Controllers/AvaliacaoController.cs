@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using APIClient.Data;
+using APIClient.Interfaces;
+using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,11 +9,17 @@ using System.Threading.Tasks;
 
 namespace APIClient.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class AvaliacaoController : Controller
     {
-        public IActionResult Index()
+
+        private readonly DataContext _context;
+        private readonly IMapper _mapper;
+        public AvaliacaoController(IMapper mapper, DataContext context)
         {
-            return View();
+            _mapper= mapper;
+            _context = context;
         }
     }
 }

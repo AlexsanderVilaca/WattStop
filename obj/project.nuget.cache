@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "v5r6MbyP9uAxcpuZDx76kF7okdv4vScBWKgcaoPK/pUNAGSnM3hHQVIokwENRVQd0NJxYPyrtpNm70DJjQ5ZcA==",
+  "dgSpecHash": "r/Cjx1maVey7Z6mwDmlA93wEQW8NkSTKJTcEh/3fnBiY8bN1Gz2WZiRI2uRvXi6l068MchwOS/pTBPf0E1wEKQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\081200027\\Source\\Repos\\WattStop\\APIClient.csproj",
+  "projectFilePath": "C:\\Users\\081200027\\Source\\Repos\\WattStop2\\APIClient.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\081200027\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\081200027\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using APIClient.Data;
+using APIClient.DTO;
+using APIClient.Interfaces;
+using APIClient.Models;
+using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,26 +11,30 @@ using System.Threading.Tasks;
 
 namespace APIClient.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class QRCodeController : Controller
     {
         private readonly DataContext _context;
         private readonly IQRCodeRepository _qrCodeRepository;
-        public QRCodeController(IQRCodeRepository qrCodeRepository, DataContext context)
+        private readonly IMapper _mapper;
+        public QRCodeController(IQRCodeRepository qrCodeRepository, DataContext context, IMapper mapper)
         {
             _qrCodeRepository = qrCodeRepository;
             _context = context;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof(List<PontoRecargaModel>))]
+        [ProducesResponseType(200, Type = typeof(List<QrCodeModel>))]
         public IActionResult GetQRCodes()
         {
             //var qrCodes = _qrCodeRepository.GetQRCodes();
-            var qrCodes = _mapper.Map<List<EmpresaDTO>>(_qrCodeRepository.GetQRCodes());
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            ////var qrCodes = _mapper.Map<List<EmpresaDTO>>(_qrCodeRepository.GetQRCodes());
+            //if (!ModelState.IsValid)
+            //    return BadRequest(ModelState);
 
-            return Ok(qrCodes);
+            return Ok();
         }
 
         [HttpPost("CreateQRCode")]
@@ -35,15 +44,15 @@ namespace APIClient.Controllers
         {
 
             ModelState.Clear();
-            if (pontoCreate == null)
+            if (qrCodeCreate == null)
                 return BadRequest(ModelState);
 
             if (qrCodeCreate.Id == null || qrCodeCreate.Id == Guid.Empty)
                 qrCodeCreate.Id = Guid.NewGuid();
 
-            EmpresaModel empresaMap = _mapper.Map<EmpresaDTO, EmpresaModel>(qrCodeCreate);
+            var empresaMap = _mapper.Map<QrCodeDTO, QrCodeModel>(qrCodeCreate);
 
-            if (!_empresaRepository.CreateQRCodes(empresaMap))
+            if (!_qrCodeRepository.CreateQRCodes(empresaMap))
             {
                 ModelState.AddModelError("", "Algo deu errado na hora de salvar");
                 return StatusCode(500, ModelState);
