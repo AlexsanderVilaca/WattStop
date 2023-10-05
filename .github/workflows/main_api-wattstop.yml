@@ -23,7 +23,7 @@ jobs:
           include-prerelease: true
 
       - name: dotnet build
-        run: dotnet build --configuration Release --project ./APIClient.csproj
+        run: dotnet build ./APIClient.csproj --configuration Release
 
       - name: dotnet publish
         run: dotnet publish ./APIClient.csproj -c Release -o out
