@@ -26,14 +26,13 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o ./APIClient.csproj
+        run: dotnet publish -c Release -o ./WattStop.sln
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: .net-app
-          path: ./APIClient.csproj
-
+          path: ./WattStop.sln
   deploy:
     runs-on: windows-latest
     needs: build
