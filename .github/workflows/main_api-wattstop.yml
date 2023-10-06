@@ -28,4 +28,4 @@ jobs:
 
       - name: Publish application
         #gera o pacote de publicação da applicação, usa as configurações de release para isso e não faz o build pois isso já fizemos no passso anterior
-        run: dotnet publish ./WattStop.sln --configuration Relase --no-build
+        run: dotnet publish ./WattStop.sln --configuration Release --no-build
