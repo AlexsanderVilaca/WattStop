@@ -35,7 +35,7 @@ jobs:
         run: dotnet publish ./WattStop.sln --configuration Release --no-build --output ${{ env.AZURE_WEBAPP_PAKCAGE_PATH }}
 
       - name: Deployment
-        uses: azure/webapps-deploy@V2
+        uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D172D22035004F0DA8A4DDF08B2C11F5 }}
