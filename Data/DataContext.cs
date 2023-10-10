@@ -9,7 +9,7 @@ namespace APIClient.Data
         {
 
         }
-
+        public DbSet<AvaliacaoModel> Avaliacao { get; set; }
         public DbSet<PontoRecargaModel> PontoRecarga { get; set; }
         public DbSet<HistoricoPontoRecargaModel> HistoricoPontoRecarga { get; set; }
         public DbSet<EmpresaModel> Empresa { get; set; }

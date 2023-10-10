@@ -22,6 +22,28 @@ namespace APIClient.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("APIClient.Models.AvaliacaoModel", b =>
+            {
+                b.Property<Guid?>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uniqueidentifier");
+
+                b.Property<string>("Avaliacao")
+                .HasColumnType("nvarchar(max)");
+
+                b.Property<decimal>("Estrelas")
+                    .IsRequired()
+                    .HasColumnType("decimal(10,2)");
+
+                b.Property<Guid>("PontoRecargaId")
+                    .IsRequired()
+                    .HasColumnType("uniqueidentifier");
+
+                b.HasKey("Id");
+
+                b.ToTable("Avaliacao");
+            });
+
             modelBuilder.Entity("APIClient.Models.EmpresaModel", b =>
                 {
                     b.Property<Guid?>("Id")

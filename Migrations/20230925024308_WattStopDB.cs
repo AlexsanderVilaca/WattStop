@@ -11,6 +11,21 @@ namespace APIClient.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+
+            migrationBuilder.CreateTable(
+                name: "Avaliacao",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Avaliacao = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Estrelas = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    PontoRecargaId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Avaliacao", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Empresa",
                 columns: table => new
@@ -69,6 +84,9 @@ namespace APIClient.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name:"Avaliacao");
+
             migrationBuilder.DropTable(
                 name: "Empresa");
 
