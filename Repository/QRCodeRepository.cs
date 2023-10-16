@@ -10,11 +10,9 @@ namespace APIClient.Repository
     public class QRCodeRepository : IQRCodeRepository
     {
         private readonly DataContext _context;
-        private readonly IMapper _mapper;
 
-        public QRCodeRepository(DataContext context, IMapper mapper)
+        public QRCodeRepository(DataContext context)
         {
-            _mapper = mapper;
             _context = context;
         }
         public bool CreateQRCode(QrCodeModel model)

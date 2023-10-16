@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace APIClient.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     public class QRCodeController : Controller
     {
         private readonly IQRCodeRepository _qrCodeRepository;
@@ -23,38 +23,37 @@ namespace APIClient.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("GetQRCodes")]
+        [HttpGet]
         [ProducesResponseType(200, Type = typeof(List<QrCodeModel>))]
         public IActionResult GetQRCodes()
         {
-            //var qrCodes = _qrCodeRepository.GetQRCodes();
-            ////var qrCodes = _mapper.Map<List<EmpresaDTO>>(_qrCodeRepository.GetQRCodes());
-            //if (!ModelState.IsValid)
-            //    return BadRequest(ModelState);
+            var qrCodes = _mapper.Map<List<EmpresaDTO>>(_qrCodeRepository.GetQrCodes());
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             return Ok();
         }
 
-        [HttpPost("CreateQRCode")]
+        [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         public IActionResult CreateQRCode([FromBody] QrCodeDTO qrCodeCreate)
         {
 
-            //ModelState.Clear();
-            //if (qrCodeCreate == null)
-            //    return BadRequest(ModelState);
+            ModelState.Clear();
+            if (qrCodeCreate == null)
+                return BadRequest(ModelState);
 
-            //if (qrCodeCreate.Id == null || qrCodeCreate.Id == Guid.Empty)
-            //    qrCodeCreate.Id = Guid.NewGuid();
+            if (qrCodeCreate.Id == null || qrCodeCreate.Id == Guid.Empty)
+                qrCodeCreate.Id = Guid.NewGuid();
 
-            //var empresaMap = _mapper.Map<QrCodeDTO, QrCodeModel>(qrCodeCreate);
+            var qrCodeMap = _mapper.Map<QrCodeDTO, QrCodeModel>(qrCodeCreate);
 
-            //if (!_qrCodeRepository.CreateQRCodes(empresaMap))
-            //{
-            //    ModelState.AddModelError("", "Algo deu errado na hora de salvar");
-            //    return StatusCode(500, ModelState);
-            //}
+            if (!_qrCodeRepository.CreateQRCode(qrCodeMap))
+            {
+                ModelState.AddModelError("", "Algo deu errado na hora de salvar");
+                return StatusCode(500, ModelState);
+            }
             return Ok();
         }
     }

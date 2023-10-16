@@ -8,11 +8,9 @@ namespace APIClient.Repository
     public class EmpresaRepository : IEmpresaRepository
     {
         private readonly DataContext _context;
-        private readonly IMapper _mapper;
 
-        public EmpresaRepository(DataContext context, IMapper mapper)
+        public EmpresaRepository(DataContext context)
         {
-            _mapper= mapper;
             _context= context;
         }
 

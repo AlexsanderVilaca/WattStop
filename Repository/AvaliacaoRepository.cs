@@ -7,6 +7,10 @@ namespace APIClient.Repository
     public class AvaliacaoRepository : IAvaliacaoRepository
     {
         private readonly DataContext _context;
+        public AvaliacaoRepository(DataContext context)
+        {
+            _context = context;
+        }
         public bool CreateAvaliacao(AvaliacaoModel model)
         {
             _context.Avaliacao.Add(model);

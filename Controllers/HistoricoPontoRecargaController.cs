@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace APIClient.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     public class HistoricoPontoRecargaController : Controller
     {
         private readonly IHistoricoRepository _historicoRepository;
@@ -23,38 +23,38 @@ namespace APIClient.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("GetHistorico")]
+        [HttpGet]
         [ProducesResponseType(200, Type = typeof(List<HistoricoPontoRecargaModel>))]
         public IActionResult GetHistoricoPontosRecarga()
         {
-            //var historicoPontosRecarga = _historicoRepository.GetHistoricoPontosRecarga();
-            ////var qrCodes = _mapper.Map<List<EmpresaDTO>>(_qrCodeRepository.GetQRCodes());
-            //if (!ModelState.IsValid)
-            //    return BadRequest(ModelState);
+            var historicoPontosRecarga = _historicoRepository.GetHistoricoPontosRecarga();
+            
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             return Ok();
         }
 
-        [HttpPost("CreateHistorico")]
+        [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         public IActionResult CreateHistoricoPontoRecarga([FromBody] HistoricoPontoRecargaDTO historicoPontoCreate)
         {
 
-            //ModelState.Clear();
-            //if (historicoPontoCreate == null)
-            //    return BadRequest(ModelState);
+            ModelState.Clear();
+            if (historicoPontoCreate == null)
+                return BadRequest(ModelState);
 
-            //if (historicoPontoCreate.Id == null || historicoPontoCreate.Id == Guid.Empty)
-            //    historicoPontoCreate.Id = Guid.NewGuid();
+            if (historicoPontoCreate.Id == null || historicoPontoCreate.Id == Guid.Empty)
+                historicoPontoCreate.Id = Guid.NewGuid();
 
-            //EmpresaModel empresaMap = _mapper.Map<EmpresaDTO, EmpresaModel>(qrCodeCreate);
+            var historicoMap = _mapper.Map<HistoricoPontoRecargaDTO, HistoricoPontoRecargaModel>(historicoPontoCreate);
 
-            //if (!_empresaRepository.CreateQRCodes(empresaMap))
-            //{
-            //    ModelState.AddModelError("", "Algo deu errado na hora de salvar");
-            //    return StatusCode(500, ModelState);
-            //}
+            if (!_historicoRepository.CreateHistoricoPontoRecarga(historicoMap))
+            {
+                ModelState.AddModelError("", "Algo deu errado na hora de salvar");
+                return StatusCode(500, ModelState);
+            }
             return Ok();
         }
     }

@@ -24,14 +24,14 @@ namespace APIClient.Controllers
         [ProducesResponseType(400)]
         public IActionResult GetEmpresas()
         {
-            //var empresas = _mapper.Map<List<EmpresaDTO>>(_empresaRepository.GetEmpresas());
-           // if (!ModelState.IsValid)
-           //     return BadRequest(ModelState);
+           var empresas = _mapper.Map<List<EmpresaDTO>>(_empresaRepository.GetEmpresas());
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             return Ok();
         }
 
-        [HttpPost("CreateEmpresa")]
+        [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         public IActionResult CreateEmpresa([FromBody] EmpresaDTO empresaCreate)

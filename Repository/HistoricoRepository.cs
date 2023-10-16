@@ -9,11 +9,9 @@ namespace APIClient.Repository
     public class HistoricoRepository : IHistoricoRepository
     {
         private readonly DataContext _context;
-        private readonly IMapper _mapper;
 
-        public HistoricoRepository(DataContext context, IMapper mapper)
+        public HistoricoRepository(DataContext context)
         {
-            _mapper = mapper;
             _context = context;
         }
         public bool CreateHistoricoPontoRecarga(HistoricoPontoRecargaModel historicoPontoRecarga)
