@@ -453,3 +453,18 @@ C:\Users\arosm7\Documents\Faculdade\New folder\AlexsanderVilaca\WattStop\obj\Deb
 C:\Users\arosm7\Documents\Faculdade\New folder\AlexsanderVilaca\WattStop\obj\Debug\net6.0\APIClient.pdb
 C:\Users\arosm7\Documents\Faculdade\New folder\AlexsanderVilaca\WattStop\obj\Debug\net6.0\APIClient.genruntimeconfig.cache
 C:\Users\arosm7\Documents\Faculdade\New folder\AlexsanderVilaca\WattStop\obj\Debug\net6.0\ref\APIClient.dll
+D:\Microsoft Visual Studio\source\repos\WattStop\bin\Debug\net6.0\DataNoSQL\App.config
+D:\Microsoft Visual Studio\source\repos\WattStop\bin\Debug\net6.0\APIClient.dll.config
+D:\Microsoft Visual Studio\source\repos\WattStop\bin\Debug\net6.0\AWSSDK.Core.dll
+D:\Microsoft Visual Studio\source\repos\WattStop\bin\Debug\net6.0\AWSSDK.SecurityToken.dll
+D:\Microsoft Visual Studio\source\repos\WattStop\bin\Debug\net6.0\DnsClient.dll
+D:\Microsoft Visual Studio\source\repos\WattStop\bin\Debug\net6.0\MongoDB.Bson.dll
+D:\Microsoft Visual Studio\source\repos\WattStop\bin\Debug\net6.0\MongoDB.Driver.dll
+D:\Microsoft Visual Studio\source\repos\WattStop\bin\Debug\net6.0\MongoDB.Driver.Core.dll
+D:\Microsoft Visual Studio\source\repos\WattStop\bin\Debug\net6.0\MongoDB.Libmongocrypt.dll
+D:\Microsoft Visual Studio\source\repos\WattStop\bin\Debug\net6.0\SharpCompress.dll
+D:\Microsoft Visual Studio\source\repos\WattStop\bin\Debug\net6.0\Snappier.dll
+D:\Microsoft Visual Studio\source\repos\WattStop\bin\Debug\net6.0\ZstdSharp.dll
+D:\Microsoft Visual Studio\source\repos\WattStop\bin\Debug\net6.0\runtimes\linux\native\libmongocrypt.so
+D:\Microsoft Visual Studio\source\repos\WattStop\bin\Debug\net6.0\runtimes\osx\native\libmongocrypt.dylib
+D:\Microsoft Visual Studio\source\repos\WattStop\bin\Debug\net6.0\runtimes\win\native\mongocrypt.dll

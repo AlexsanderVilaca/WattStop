@@ -7,6 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="App - Copy.config" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="App - Copy.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MongoDB.Driver" Version="2.22.0" />
   </ItemGroup>
 
