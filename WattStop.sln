@@ -5,7 +5,7 @@ VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APIClient", "APIClient.csproj", "{8457FEBC-BD84-4AAE-BAEB-C8FC39A16761}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataNoSQL", "..\DataNoSQL\DataNoSQL.csproj", "{8EA3BD29-0054-4623-88D6-C572751C5128}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataNoSQL", "DataNoSQL\DataNoSQL.csproj", "{2DD0F9E2-45EF-49CF-9735-4D12FEC99D1E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{8457FEBC-BD84-4AAE-BAEB-C8FC39A16761}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8457FEBC-BD84-4AAE-BAEB-C8FC39A16761}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8457FEBC-BD84-4AAE-BAEB-C8FC39A16761}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8EA3BD29-0054-4623-88D6-C572751C5128}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8EA3BD29-0054-4623-88D6-C572751C5128}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8EA3BD29-0054-4623-88D6-C572751C5128}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8EA3BD29-0054-4623-88D6-C572751C5128}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DD0F9E2-45EF-49CF-9735-4D12FEC99D1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DD0F9E2-45EF-49CF-9735-4D12FEC99D1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DD0F9E2-45EF-49CF-9735-4D12FEC99D1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DD0F9E2-45EF-49CF-9735-4D12FEC99D1E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
