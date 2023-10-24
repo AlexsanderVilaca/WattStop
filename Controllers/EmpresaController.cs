@@ -55,6 +55,10 @@ namespace APIClient.Controllers
                 ModelState.AddModelError("", "Algo deu errado na hora de salvar");
                 return StatusCode(500, ModelState);
             }
+
+
+
+
             return Ok();
         }
     }

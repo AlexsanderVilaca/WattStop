@@ -572,3 +572,18 @@ C:\Users\arosm7\Documents\New folder\obj\Debug\net6.0\scopedcss\bundle\APIClient
 C:\Users\arosm7\Documents\New folder\obj\Debug\net6.0\APIClient.csproj.CopyComplete
 C:\Users\arosm7\Documents\New folder\obj\Debug\net6.0\APIClient.genruntimeconfig.cache
 C:\Users\arosm7\Documents\New folder\obj\Debug\net6.0\ref\APIClient.dll
+Z:\EC8\WattStop\bin\Debug\net6.0\DataNoSQL\App.config
+Z:\EC8\WattStop\bin\Debug\net6.0\APIClient.dll.config
+Z:\EC8\WattStop\bin\Debug\net6.0\AWSSDK.Core.dll
+Z:\EC8\WattStop\bin\Debug\net6.0\AWSSDK.SecurityToken.dll
+Z:\EC8\WattStop\bin\Debug\net6.0\DnsClient.dll
+Z:\EC8\WattStop\bin\Debug\net6.0\MongoDB.Bson.dll
+Z:\EC8\WattStop\bin\Debug\net6.0\MongoDB.Driver.dll
+Z:\EC8\WattStop\bin\Debug\net6.0\MongoDB.Driver.Core.dll
+Z:\EC8\WattStop\bin\Debug\net6.0\MongoDB.Libmongocrypt.dll
+Z:\EC8\WattStop\bin\Debug\net6.0\SharpCompress.dll
+Z:\EC8\WattStop\bin\Debug\net6.0\Snappier.dll
+Z:\EC8\WattStop\bin\Debug\net6.0\ZstdSharp.dll
+Z:\EC8\WattStop\bin\Debug\net6.0\runtimes\linux\native\libmongocrypt.so
+Z:\EC8\WattStop\bin\Debug\net6.0\runtimes\osx\native\libmongocrypt.dylib
+Z:\EC8\WattStop\bin\Debug\net6.0\runtimes\win\native\mongocrypt.dll
