@@ -17,5 +17,7 @@ namespace DataNoSQL.DTC
         public decimal Estrelas { get; set; }
         [BsonElement]
         public Guid PontoRecargaId { get; set; }
+        [BsonElement]
+        public DateTime DataInclusao { get; set; }
     }
 }

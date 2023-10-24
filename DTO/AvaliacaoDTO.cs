@@ -6,5 +6,6 @@
         public string Avaliacao { get; set; }
         public decimal Estrelas { get; set; }
         public Guid PontoRecargaId { get; set; }
+        public DateTime DataInclusao { get; set; }
     }
 }

@@ -35,7 +35,7 @@ namespace APIClient.Repository
 
         public List<EmpresaModel> GetEmpresas()
         {
-            return _context.Empresa.OrderBy(x => x.NomeFantasia).ToList();
+            return _context.Empresa.OrderBy(x => x.Nome).ToList();
         }
 
     }

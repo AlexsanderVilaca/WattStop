@@ -23,26 +23,28 @@ namespace APIClient.Migrations
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("APIClient.Models.AvaliacaoModel", b =>
-            {
-                b.Property<Guid?>("Id")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("uniqueidentifier");
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
-                b.Property<string>("Avaliacao")
-                .HasColumnType("nvarchar(max)");
+                    b.Property<string>("Avaliacao")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                b.Property<decimal>("Estrelas")
-                    .IsRequired()
-                    .HasColumnType("decimal(10,2)");
+                    b.Property<DateTime>("DataInclusao")
+                        .HasColumnType("datetime2");
 
-                b.Property<Guid>("PontoRecargaId")
-                    .IsRequired()
-                    .HasColumnType("uniqueidentifier");
+                    b.Property<decimal>("Estrelas")
+                        .HasColumnType("decimal(18,2)");
 
-                b.HasKey("Id");
+                    b.Property<Guid>("PontoRecargaId")
+                        .HasColumnType("uniqueidentifier");
 
-                b.ToTable("Avaliacao");
-            });
+                    b.HasKey("Id");
+
+                    b.ToTable("Avaliacao");
+                });
 
             modelBuilder.Entity("APIClient.Models.EmpresaModel", b =>
                 {
@@ -54,11 +56,14 @@ namespace APIClient.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("DataInclusao")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("NomeFantasia")
+                    b.Property<string>("Nome")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -93,8 +98,15 @@ namespace APIClient.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("DataInclusao")
+                        .HasColumnType("datetime2");
+
                     b.Property<Guid>("EmpresaId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Localizacao")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TipoCarregador")
                         .IsRequired()
@@ -115,12 +127,47 @@ namespace APIClient.Migrations
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
+                    b.Property<DateTime>("DataInclusao")
+                        .HasColumnType("datetime2");
+
                     b.Property<Guid>("PontoRecargaId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.ToTable("QrCode");
+                });
+
+            modelBuilder.Entity("APIClient.Models.UsuarioModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("DT_Alteracao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DT_Criacao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Secret")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TP_Acesso")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("User")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Usuario");
                 });
 #pragma warning restore 612, 618
         }
