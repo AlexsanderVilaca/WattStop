@@ -17,9 +17,9 @@ namespace APIClient.Controllers
             _usuarioRepository = usuarioRepository;
         }
         [HttpPost]
-        public IActionResult Login([FromBody] String usuario, [FromBody] String secret)
+        public IActionResult Login([FromBody] UsuarioDTO dto)
         {
-            bool _isLoginValid = _usuarioRepository.ValidateUsuario(usuario, secret);
+            bool _isLoginValid = _usuarioRepository.ValidateUsuario(dto.User, dto.Secret);
             return Ok();
         }
 
