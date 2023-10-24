@@ -15,6 +15,7 @@ builder.Services.AddScoped<IPontoRecargaRepository, PontoRecargaRepository>();
 builder.Services.AddScoped<IQRCodeRepository, QRCodeRepository>();
 builder.Services.AddScoped<IHistoricoRepository, HistoricoRepository>();
 builder.Services.AddScoped<IAvaliacaoRepository, AvaliacaoRepository>();
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>(); /* sempre que um IUsuarioRepository for necessário, cria um UsuarioRepository() e passa para ele */
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(options =>
