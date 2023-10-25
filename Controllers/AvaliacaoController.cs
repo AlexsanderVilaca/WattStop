@@ -61,12 +61,37 @@ namespace APIClient.Controllers
             if (avaliacaoUpdate.Id == null || avaliacaoUpdate.Id == Guid.Empty)
                 ModelState.AddModelError("","Especifique o Id da avaliação a ser alterada");
 
+            if (_repository.AvaliacaoExists(avaliacaoUpdate.Id.Value) == false)
+                return NotFound();
+
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             var avaliacaoMap = _mapper.Map<AvaliacaoDTO, AvaliacaoModel>(avaliacaoUpdate);
 
             if (!_repository.UpdateAvaliacao(avaliacaoMap))
+            {
+                ModelState.AddModelError("", "Algo deu errado na hora de salvar");
+                return StatusCode(500, ModelState);
+            }
+            return Ok();
+        }
+
+        [HttpDelete]
+        public IActionResult DeleteAvaliacao(Guid avaliacaoId)
+        {
+            ModelState.Clear();
+
+            if (avaliacaoId == Guid.Empty)
+                ModelState.AddModelError("", "Especifique o Id da avaliação a ser alterada");
+
+            if(_repository.AvaliacaoExists(avaliacaoId) == false)
+                return NotFound();
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!_repository.DeleteAvaliacao(avaliacaoId))
             {
                 ModelState.AddModelError("", "Algo deu errado na hora de salvar");
                 return StatusCode(500, ModelState);

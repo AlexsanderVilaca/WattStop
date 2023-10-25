@@ -9,6 +9,8 @@ namespace APIClient.Interfaces
 
         bool CreateQRCode(QrCodeModel model);
         bool UpdateQRCode(QrCodeModel model);
+        bool DeleteQRCode(Guid id);
+        bool QRCodeExists(Guid id);
         bool Save();
     }
 }

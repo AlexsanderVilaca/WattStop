@@ -8,6 +8,8 @@ namespace APIClient.Interfaces
         AvaliacaoModel GetAvaliacao(Guid id);
         bool CreateAvaliacao(AvaliacaoModel model);
         bool UpdateAvaliacao(AvaliacaoModel model);
+        bool DeleteAvaliacao(Guid id);
+        bool AvaliacaoExists(Guid id);
         bool Save();
     }
 }

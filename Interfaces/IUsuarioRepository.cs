@@ -9,5 +9,7 @@ namespace APIClient.Interfaces
         bool UpdateUsuario(UsuarioModel model);
         UsuarioModel GetUsuario(String usuario);
         bool ValidateUsuario(String usuario, String secret);
+        bool UsuarioExists(String usuario);
+        List<UsuarioModel> GetUsuarios();
     }
 }

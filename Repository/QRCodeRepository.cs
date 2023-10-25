@@ -21,6 +21,13 @@ namespace APIClient.Repository
             return Save();
         }
 
+        public bool DeleteQRCode(Guid id)
+        {
+            var model = GetQRCode(id);
+            _context.QrCode.Remove(model);
+            return Save();
+        }
+
         public QrCodeModel GetQRCode(Guid id)
         {
             return _context.QrCode.FirstOrDefault(x => x.Id == id);
@@ -29,6 +36,11 @@ namespace APIClient.Repository
         public List<QrCodeModel> GetQrCodes()
         {
             return _context.QrCode.ToList();
+        }
+
+        public bool QRCodeExists(Guid id)
+        {
+            return _context.QrCode.FirstOrDefault(x => x.Id == id) != null;
         }
 
         public bool Save()

@@ -4,6 +4,7 @@ using APIClient.Models;
 using AutoMapper;
 using DataNoSQL.DAL;
 using DataNoSQL.DTC;
+using DnsClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace APIClient.Repository
@@ -49,6 +50,11 @@ namespace APIClient.Repository
         public List<HistoricoPontoRecargaModel> GetHistoricoPontosRecarga()
         {
             return _context.HistoricoPontoRecarga.OrderByDescending(x => x.DataHora).ToList();
+        }
+
+        public bool HistoricoExists(Guid id)
+        {
+            return _context.HistoricoPontoRecarga.FirstOrDefault(x => x.Id == id) != null;
         }
 
         public bool Save()

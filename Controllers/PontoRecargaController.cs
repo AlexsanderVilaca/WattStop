@@ -2,6 +2,7 @@
 using APIClient.DTO;
 using APIClient.Interfaces;
 using APIClient.Models;
+using APIClient.Repository;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
@@ -60,11 +61,36 @@ namespace APIClient.Controllers
                 return BadRequest(ModelState);
             ModelState.Clear();
             if (pontoUpdate.Id == null || pontoUpdate.Id == Guid.Empty)
-                ModelState.AddModelError("","Especifique o Id do ponto de recarga");
+                return BadRequest("Especifique o Id do ponto de recarga a ser alterado");
+
+            if (_pontoRecargaRepository.PontoRecargaExists(pontoUpdate.Id.Value) == false)
+                return NotFound();
 
             var pontoRecargaMap = _mapper.Map<PontoRecargaDTO, PontoRecargaModel>(pontoUpdate);
 
             if (!_pontoRecargaRepository.CreatePontoRecarga(pontoRecargaMap))
+            {
+                ModelState.AddModelError("", "Algo deu errado na hora de salvar");
+                return StatusCode(500, ModelState);
+            }
+            return Ok();
+        }
+
+        [HttpDelete]
+        public IActionResult DeletePontoRecarga(Guid pontoRecargaId)
+        {
+            ModelState.Clear();
+
+            if (pontoRecargaId == Guid.Empty)
+                return BadRequest("Especifique o Id do ponto de recarga a ser deletado");
+
+            if (_pontoRecargaRepository.PontoRecargaExists(pontoRecargaId) == false)
+                return NotFound();
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!_pontoRecargaRepository.DeletePontoRecarga(pontoRecargaId))
             {
                 ModelState.AddModelError("", "Algo deu errado na hora de salvar");
                 return StatusCode(500, ModelState);

@@ -34,7 +34,7 @@ namespace APIClient.Controllers
         private bool ValidarCNPJ(string cnpj, out string msg)
         {
             cnpj = cnpj.Replace(".", "").Replace("/", "").Replace("-", "");
-            msg = "";
+            msg = "Este CNPJ é válido";
             if (cnpj.Length != 14)
             {
                 msg = "O CNPJ deve possuir 14 dígitos";
@@ -63,7 +63,7 @@ namespace APIClient.Controllers
             resto = soma % 11;
 
             int digito2 = resto < 2 ? 0 : 11 - resto;
-            
+
             return digitoVerificador == $"{digito1}{digito2}";
         }
 
@@ -109,18 +109,18 @@ namespace APIClient.Controllers
         public IActionResult UpdateEmpresa([FromBody] EmpresaDTO empresaUpdate)
         {
             ModelState.Clear();
-            if (empresaUpdate== null)
+            if (empresaUpdate == null)
                 return BadRequest(ModelState);
 
             string msg = "";
 
             if (empresaUpdate.Id == null || empresaUpdate.Id == Guid.Empty)
-                ModelState.AddModelError("","Especifique o Id da empresa a ser alterada");
+                ModelState.AddModelError("", "Especifique o Id da empresa a ser alterada");
 
             if (ValidarCNPJ(empresaUpdate.CNPJ, out msg) == false)
                 ModelState.AddModelError("", "Este CNPJ não é valido. " + msg);
 
-            if (_empresaRepository.GetEmpresa(empresaUpdate.CNPJ) != null)
+            if (_empresaRepository.GetEmpresa(empresaUpdate.CNPJ) != null && _empresaRepository.GetEmpresa(empresaUpdate.CNPJ).Id != empresaUpdate.Id)
                 ModelState.AddModelError("", "Já existe uma empresa com este CNPJ");
 
 
@@ -129,12 +129,34 @@ namespace APIClient.Controllers
 
             EmpresaModel empresaMap = _mapper.Map<EmpresaDTO, EmpresaModel>(empresaUpdate);
 
-            if (!_empresaRepository.CreateEmpresa(empresaMap))
+            if (!_empresaRepository.UpdateEmpresa(empresaMap))
             {
                 ModelState.AddModelError("", "Algo deu errado na hora de salvar");
                 return StatusCode(500, ModelState);
             }
 
+            return Ok();
+        }
+
+        [HttpDelete]
+        public IActionResult DeleteEmpresa(Guid empresaId)
+        {
+            ModelState.Clear();
+
+            if (empresaId == Guid.Empty)
+                ModelState.AddModelError("", "Especifique o Id da empresa a ser deletada");
+
+            if (_empresaRepository.EmpresaExists(empresaId) == false)
+                return NotFound();
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!_empresaRepository.DeleteEmpresa(empresaId))
+            {
+                ModelState.AddModelError("", "Algo deu errado na hora de salvar");
+                return StatusCode(500, ModelState);
+            }
             return Ok();
         }
     }

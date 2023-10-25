@@ -76,5 +76,27 @@ namespace APIClient.Controllers
             }
             return Ok();
         }
+
+        [HttpDelete]
+        public IActionResult DeleteQRCode(Guid qrCodeId)
+        {
+            ModelState.Clear();
+
+            if (qrCodeId == Guid.Empty)
+                return BadRequest("Especifique o Id do QR Code a ser alterada");
+
+            if (_qrCodeRepository.QRCodeExists(qrCodeId) == false)
+                return NotFound();
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!_qrCodeRepository.DeleteQRCode(qrCodeId))
+            {
+                ModelState.AddModelError("", "Algo deu errado na hora de salvar");
+                return StatusCode(500, ModelState);
+            }
+            return Ok();
+        }
     }
 }

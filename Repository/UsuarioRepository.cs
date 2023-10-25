@@ -41,7 +41,23 @@ namespace APIClient.Repository
         }
         public bool Delete(string usuario)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var user = GetUsuario(usuario);
+                _context.Usuario.Remove(user);
+                if (Save())
+                {
+                    _DAL.Delete(user.Id);
+                    return true;
+                }
+                else
+                    return false;
+            }
+            catch (Exception error)
+            {
+                Console.WriteLine(error.Message);
+                return false;
+            }
         }
         public UsuarioModel GetUsuario(string user)
         {
@@ -65,7 +81,10 @@ namespace APIClient.Repository
             var saved = _context.SaveChanges();
             return (saved > 0);
         }
-
+        public List<UsuarioModel> GetUsuarios()
+        {
+            return _context.Usuario.OrderBy(x => x.User).ToList();
+        }
         public bool UpdateUsuario(UsuarioModel model)
         {
             try
@@ -86,6 +105,10 @@ namespace APIClient.Repository
                 Console.WriteLine(error.Message);
                 return false;
             }
+        }
+        public bool UsuarioExists(string usuario)
+        {
+            return _context.Usuario.FirstOrDefault(x => x.User.ToUpper() == usuario.ToUpper()) != null;
         }
     }
 }

@@ -64,14 +64,17 @@ namespace APIClient.Repository
             return empresas;
         }
 
-        public bool UpdateEmpresa(EmpresaModel empresa)
+        public bool UpdateEmpresa(EmpresaModel empresaModel)
         {
             try
             {
-                _context.Empresa.Update(empresa);
+                var empresa = _context.Empresa.First(x => x.Id == empresaModel.Id);
+                empresa.CNPJ = empresaModel.CNPJ;
+                empresa.Email= empresaModel.Email;
+                empresa.Nome = empresaModel.Nome;
                 if (Save())
                 {
-                    var filtro = Builders<EmpresaDTCNoSQL>.Filter.Eq("_id", empresa.Id);
+                    var filtro = Builders<EmpresaDTCNoSQL>.Filter.Eq("_id", empresaModel.Id);
                     var empresaMap = _mapper.Map<EmpresaDTCNoSQL>(empresa);
                     _DAL.Update(filtro, empresaMap);
                     return true;
@@ -85,6 +88,38 @@ namespace APIClient.Repository
                 Console.WriteLine(error.Message);
                 return false;
             }
+        }
+
+        public bool DeleteEmpresa(Guid id)
+        {
+            try
+            {
+                var empresa = GetEmpresa(id);
+                _context.Empresa.Remove(empresa);
+                if (Save())
+                {
+                    _DAL.Delete(id);
+                    return true;
+                }
+                else
+                    return false;
+
+            }
+            catch (Exception error)
+            {
+                Console.WriteLine(error.Message);
+                return false;
+            }
+        }
+
+        public bool EmpresaExists(Guid id)
+        {
+            return _context.Empresa.FirstOrDefault(x => x.Id == id) != null;
+        }
+
+        public bool EmpresaExists(string cnpj)
+        {
+            return _context.Empresa.FirstOrDefault(x => x.CNPJ == cnpj) == null;
         }
     }
 }

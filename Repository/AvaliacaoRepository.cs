@@ -80,5 +80,33 @@ namespace APIClient.Repository
             var saved = _context.SaveChanges();
             return saved > 0 ? true : false;
         }
+
+        public bool DeleteAvaliacao(Guid id)
+        {
+            try
+            {
+                var avaliacao = GetAvaliacao(id);
+                _context.Avaliacao.Remove(avaliacao);
+                if (Save())
+                {
+                    _DAL.Delete(id);
+                    return true;
+                }
+                else
+                    return false;
+
+            }
+            catch (Exception error)
+            {
+                Console.WriteLine(error.Message);
+                return false;
+            }
+
+        }
+
+        public bool AvaliacaoExists(Guid id)
+        {
+            return _context.Avaliacao.FirstOrDefault(x=>x.Id == id) != null;
+        }
     }
 }
