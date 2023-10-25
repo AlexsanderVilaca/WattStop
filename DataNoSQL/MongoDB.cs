@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
+using System.Security.Authentication;
 using System.Text.Json;
 
 namespace DataNoSQL
@@ -22,26 +23,10 @@ namespace DataNoSQL
         public void CreateClient(string databaseName)
         {
 
-            string host = Settings.Host;
-            Host = host;
-            int port = Settings.Port;
-            Port = port.ToString();
-            string user = Settings.User;
-            string pw = Settings.Password;
-            int timeoutMinutes = Settings.TimeoutMinutes;
-            int timeoutSeconds = Settings.TimeoutSeconds;
-
-            MongoClientSettings settings = new MongoClientSettings();
-            settings.ConnectionMode = ConnectionMode.Standalone;
-            settings.ServerSelectionTimeout = new TimeSpan(hours: 0, minutes: timeoutMinutes, seconds: timeoutSeconds);
-            settings.ConnectTimeout = new TimeSpan(hours: 0, minutes: timeoutMinutes, seconds: timeoutSeconds);
-            settings.SocketTimeout = new TimeSpan(hours: 0, minutes: timeoutMinutes, seconds: timeoutSeconds);
-            settings.Server = new MongoServerAddress(host, port);
-
-            if (!string.IsNullOrEmpty(user))
-                settings.Credential = MongoCredential.CreateCredential(databaseName, user, pw);
-
-            //Client = new MongoClient(ConnectionString);            
+            string connectionUri = Settings.ConnectionURI;
+            var settings = MongoClientSettings.FromConnectionString(connectionUri);
+            settings.ConnectTimeout = TimeSpan.FromMinutes(5);
+            settings.ServerApi = new ServerApi(ServerApiVersion.V1);
             Client = new MongoClient(settings);
         }
 

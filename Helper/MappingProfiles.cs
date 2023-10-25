@@ -1,6 +1,7 @@
 ﻿using APIClient.DTO;
 using APIClient.Models;
 using AutoMapper;
+using DataNoSQL.DTC;
 
 namespace APIClient.Helper
 {
@@ -21,6 +22,31 @@ namespace APIClient.Helper
             CreateMap<HistoricoPontoRecargaDTO, HistoricoPontoRecargaModel>();
             CreateMap<QrCodeDTO, QrCodeModel>();
             CreateMap<UsuarioDTO, UsuarioModel>();
+
+            CreateMap<AvaliacaoDTO, AvaliacaoDTCNoSQL>();
+            CreateMap<EmpresaDTO, EmpresaDTCNoSQL>();
+            CreateMap<PontoRecargaDTO, PontoRecargaDTCNoSQL>();
+            CreateMap<HistoricoPontoRecargaDTO, HistoricoPontoRecargaDTCNoSQL>();
+            CreateMap<UsuarioDTO, UsuariosDTCNoSQL>();
+
+            CreateMap<AvaliacaoDTCNoSQL, AvaliacaoModel>();
+            CreateMap<EmpresaDTCNoSQL, EmpresaModel>();
+            CreateMap<PontoRecargaDTCNoSQL, PontoRecargaModel>();
+            CreateMap<HistoricoPontoRecargaDTCNoSQL, HistoricoPontoRecargaDTCNoSQL>();
+            CreateMap<UsuariosDTCNoSQL, UsuarioModel>();
+
+            CreateMap<AvaliacaoModel, AvaliacaoDTCNoSQL>();
+            CreateMap<EmpresaModel, EmpresaDTCNoSQL>();
+            CreateMap<PontoRecargaModel, PontoRecargaDTCNoSQL>();
+            CreateMap<HistoricoPontoRecargaModel, HistoricoPontoRecargaDTCNoSQL>();
+            CreateMap<UsuarioModel, UsuariosDTCNoSQL>();
+
+            CreateMap<AvaliacaoDTCNoSQL, AvaliacaoDTO>();
+            CreateMap<EmpresaDTCNoSQL, EmpresaDTO>();
+            CreateMap<PontoRecargaDTCNoSQL, PontoRecargaDTO>();
+            CreateMap<HistoricoPontoRecargaDTCNoSQL, HistoricoPontoRecargaDTO>();
+            CreateMap<UsuariosDTCNoSQL, UsuarioDTO>();
+
         }
     }
 }

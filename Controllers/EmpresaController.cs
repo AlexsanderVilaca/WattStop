@@ -28,7 +28,7 @@ namespace APIClient.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            return Ok();
+            return Ok(empresas);
         }
 
         [HttpPost]
@@ -55,9 +55,6 @@ namespace APIClient.Controllers
                 ModelState.AddModelError("", "Algo deu errado na hora de salvar");
                 return StatusCode(500, ModelState);
             }
-
-
-
 
             return Ok();
         }

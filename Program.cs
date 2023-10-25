@@ -1,6 +1,7 @@
 using APIClient.Data;
 using APIClient.Interfaces;
 using APIClient.Repository;
+using DataNoSQL.DAL;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<EmpresaDALNoSQL>();
 builder.Services.AddScoped<IEmpresaRepository, EmpresaRepository>();
 builder.Services.AddScoped<IPontoRecargaRepository, PontoRecargaRepository>();
 builder.Services.AddScoped<IQRCodeRepository, QRCodeRepository>();

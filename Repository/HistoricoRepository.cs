@@ -2,6 +2,8 @@
 using APIClient.Interfaces;
 using APIClient.Models;
 using AutoMapper;
+using DataNoSQL.DAL;
+using DataNoSQL.DTC;
 using Microsoft.EntityFrameworkCore;
 
 namespace APIClient.Repository
@@ -9,15 +11,36 @@ namespace APIClient.Repository
     public class HistoricoRepository : IHistoricoRepository
     {
         private readonly DataContext _context;
-
-        public HistoricoRepository(DataContext context)
+        private readonly IMapper _mapper;
+        private readonly HistoricoPontoRecargaDALNoSQL _DAL;
+        public HistoricoRepository(DataContext context,IMapper mapper, HistoricoPontoRecargaDALNoSQL dal)
         {
             _context = context;
+            _mapper = mapper;
+            _DAL = dal;
         }
         public bool CreateHistoricoPontoRecarga(HistoricoPontoRecargaModel historicoPontoRecarga)
         {
-            _context.HistoricoPontoRecarga.Add(historicoPontoRecarga);
-            return Save();
+            try
+            {
+                _context.HistoricoPontoRecarga.Add(historicoPontoRecarga);
+                if (Save())
+                {
+
+                    var historicoPontoRecargaModel = _context.HistoricoPontoRecarga.FirstOrDefault(x => x.Id == historicoPontoRecarga.Id);
+                    var historicoMap = _mapper.Map<HistoricoPontoRecargaDTCNoSQL>(historicoPontoRecargaModel);
+                    _DAL.Insert(historicoMap);
+                    return true;
+                }
+                else
+                    return false;
+
+            }
+            catch (Exception error)
+            {
+                Console.WriteLine(error.Message);
+                return false;
+            }
         }
 
         public HistoricoPontoRecargaModel GetHistoricoPontoRecarga(Guid id)

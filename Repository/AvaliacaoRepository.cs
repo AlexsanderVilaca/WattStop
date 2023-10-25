@@ -1,20 +1,45 @@
 ﻿using APIClient.Data;
 using APIClient.Interfaces;
 using APIClient.Models;
+using AutoMapper;
+using DataNoSQL.DAL;
+using DataNoSQL.DTC;
 
 namespace APIClient.Repository
 {
     public class AvaliacaoRepository : IAvaliacaoRepository
     {
         private readonly DataContext _context;
-        public AvaliacaoRepository(DataContext context)
+        private readonly AvaliacaoDALNoSQL _DAL;
+        private readonly IMapper _mapper;
+        public AvaliacaoRepository(DataContext context,IMapper mapper, AvaliacaoDALNoSQL dal)
         {
             _context = context;
+            _mapper = mapper;
+            _DAL = dal;
         }
         public bool CreateAvaliacao(AvaliacaoModel model)
         {
-            _context.Avaliacao.Add(model);
-            return Save();
+            try
+            {
+                _context.Avaliacao.Add(model);
+                if (Save())
+                {
+
+                    var avaliacaoModel = _context.Empresa.FirstOrDefault(x => x.Id == model.Id);
+                    var avaliacaoMap = _mapper.Map<AvaliacaoDTCNoSQL>(model);
+                    _DAL.Insert(avaliacaoMap);
+                    return true;
+                }
+                else
+                    return false;
+
+            }
+            catch (Exception error)
+            {
+                Console.WriteLine(error.Message);
+                return false;
+            }
         }
 
         public AvaliacaoModel GetAvaliacao(Guid id)

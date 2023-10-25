@@ -2,22 +2,45 @@
 using APIClient.Interfaces;
 using APIClient.Models;
 using AutoMapper;
+using DataNoSQL.DAL;
+using DataNoSQL.DTC;
 
 namespace APIClient.Repository
 {
     public class EmpresaRepository : IEmpresaRepository
     {
         private readonly DataContext _context;
+        private readonly EmpresaDALNoSQL _DAL;
+        private readonly IMapper _mapper;
 
-        public EmpresaRepository(DataContext context)
+        public EmpresaRepository(DataContext context,IMapper mapper, EmpresaDALNoSQL dal)
         {
             _context= context;
+            _mapper= mapper;
+            _DAL= dal;
         }
 
         public bool CreateEmpresa(EmpresaModel empresa)
         {
-            _context.Empresa.Add(empresa);
-            return Save();
+            try
+            {
+                _context.Empresa.Add(empresa);
+                if (Save()) {
+
+                    var empresaModel = _context.Empresa.FirstOrDefault(x => x.Id == empresa.Id);
+                    var empresaMap = _mapper.Map<EmpresaDTCNoSQL>(empresaModel);
+                    _DAL.Insert(empresaMap);
+                    return true;
+                }
+                else
+                    return false;
+
+            }
+            catch(Exception error)
+            {
+                Console.WriteLine(error.Message);
+                return false;
+            }
         }
         public bool Save()
         {

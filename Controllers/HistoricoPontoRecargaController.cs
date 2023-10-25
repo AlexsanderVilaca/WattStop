@@ -32,7 +32,7 @@ namespace APIClient.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            return Ok();
+            return Ok(historicoPontosRecarga);
         }
 
         [HttpPost]

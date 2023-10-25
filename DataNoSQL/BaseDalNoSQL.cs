@@ -64,7 +64,11 @@ namespace DataNoSQL
                 retorno = true;
             return retorno;
         }
-        public virtual bool UpdateInsert(FilterDefinition<T> filter, T document)
+        public virtual void Insert(T document)
+        {
+            conexao.GetCollection(CollectionName).InsertOne(document);
+        }
+        public virtual bool Update(FilterDefinition<T> filter, T document)
         {
             return conexao.GetCollection(CollectionName).ReplaceOne(filter, document, new ReplaceOptions() { IsUpsert = true }).ModifiedCount > 0;
         }
