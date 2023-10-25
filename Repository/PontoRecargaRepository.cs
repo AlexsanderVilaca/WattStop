@@ -5,6 +5,7 @@ using APIClient.Models;
 using AutoMapper;
 using DataNoSQL.DAL;
 using DataNoSQL.DTC;
+using MongoDB.Driver;
 
 namespace APIClient.Repository
 {
@@ -27,8 +28,7 @@ namespace APIClient.Repository
                 _context.PontoRecarga.Add(pontoRecarga);
                 if (Save())
                 {
-                    var pontoRecargaModel = _context.PontoRecarga.FirstOrDefault(x => x.Id == pontoRecarga.Id);
-                    var pontoRecargaMap = _mapper.Map<PontoRecargaDTCNoSQL>(pontoRecargaModel);
+                    var pontoRecargaMap = _mapper.Map<PontoRecargaDTCNoSQL>(pontoRecarga);
                     _DAL.Insert(pontoRecargaMap);
                     return true;
                 }
@@ -57,6 +57,29 @@ namespace APIClient.Repository
         {
             var saved = _context.SaveChanges();
             return saved > 0 ? true : false;
+        }
+
+        public bool UpdatePontoRecarga(PontoRecargaModel pontoRecarga)
+        {
+            try
+            {
+                _context.PontoRecarga.Update(pontoRecarga);
+                if (Save())
+                {
+                    var pontoRecargaMap = _mapper.Map<PontoRecargaDTCNoSQL>(pontoRecarga);
+                    var filtro = Builders<PontoRecargaDTCNoSQL>.Filter.Eq("_id",pontoRecarga.Id);
+                    _DAL.Update(filtro, pontoRecargaMap);
+                    return true;
+                }
+                else
+                    return false;
+
+            }
+            catch (Exception error)
+            {
+                Console.WriteLine(error.Message);
+                return false;
+            }
         }
     }
 }

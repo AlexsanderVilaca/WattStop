@@ -4,8 +4,9 @@ namespace APIClient.Interfaces
 {
     public interface IUsuarioRepository
     {
-        bool CreateUpdate(UsuarioModel usuario);
+        bool CreateUsuario(UsuarioModel usuario);
         bool Delete(String usuario);
+        bool UpdateUsuario(UsuarioModel model);
         UsuarioModel GetUsuario(String usuario);
         bool ValidateUsuario(String usuario, String secret);
     }

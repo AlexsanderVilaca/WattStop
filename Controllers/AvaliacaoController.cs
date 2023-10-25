@@ -52,5 +52,26 @@ namespace APIClient.Controllers
             }
             return Ok();
         }
+
+        [HttpPut]
+        public IActionResult UpdateAvaliacao([FromBody] AvaliacaoDTO avaliacaoUpdate)
+        {
+            ModelState.Clear();
+
+            if (avaliacaoUpdate.Id == null || avaliacaoUpdate.Id == Guid.Empty)
+                ModelState.AddModelError("","Especifique o Id da avaliação a ser alterada");
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var avaliacaoMap = _mapper.Map<AvaliacaoDTO, AvaliacaoModel>(avaliacaoUpdate);
+
+            if (!_repository.UpdateAvaliacao(avaliacaoMap))
+            {
+                ModelState.AddModelError("", "Algo deu errado na hora de salvar");
+                return StatusCode(500, ModelState);
+            }
+            return Ok();
+        }
     }
 }

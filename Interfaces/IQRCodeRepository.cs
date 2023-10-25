@@ -8,6 +8,7 @@ namespace APIClient.Interfaces
         QrCodeModel GetQRCode(Guid id);
 
         bool CreateQRCode(QrCodeModel model);
+        bool UpdateQRCode(QrCodeModel model);
         bool Save();
     }
 }

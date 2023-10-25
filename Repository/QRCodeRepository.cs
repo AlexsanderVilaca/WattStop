@@ -23,7 +23,7 @@ namespace APIClient.Repository
 
         public QrCodeModel GetQRCode(Guid id)
         {
-            return _context.QrCode.FirstOrDefault(x=>x.Id==id);
+            return _context.QrCode.FirstOrDefault(x => x.Id == id);
         }
 
         public List<QrCodeModel> GetQrCodes()
@@ -35,6 +35,12 @@ namespace APIClient.Repository
         {
             var saved = _context.SaveChanges();
             return saved > 0 ? true : false;
+        }
+
+        public bool UpdateQRCode(QrCodeModel model)
+        {
+            _context.QrCode.Update(model);
+            return Save();
         }
     }
 }

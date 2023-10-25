@@ -26,9 +26,7 @@ namespace APIClient.Repository
                 _context.HistoricoPontoRecarga.Add(historicoPontoRecarga);
                 if (Save())
                 {
-
-                    var historicoPontoRecargaModel = _context.HistoricoPontoRecarga.FirstOrDefault(x => x.Id == historicoPontoRecarga.Id);
-                    var historicoMap = _mapper.Map<HistoricoPontoRecargaDTCNoSQL>(historicoPontoRecargaModel);
+                    var historicoMap = _mapper.Map<HistoricoPontoRecargaDTCNoSQL>(historicoPontoRecarga);
                     _DAL.Insert(historicoMap);
                     return true;
                 }

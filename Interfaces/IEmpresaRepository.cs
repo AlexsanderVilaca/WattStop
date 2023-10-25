@@ -8,6 +8,7 @@ namespace APIClient.Interfaces
         EmpresaModel GetEmpresa(Guid id);
         EmpresaModel GetEmpresa(string cnpj);
         bool CreateEmpresa(EmpresaModel empresa);
+        bool UpdateEmpresa(EmpresaModel empresa);
         bool Save();
     }
 }

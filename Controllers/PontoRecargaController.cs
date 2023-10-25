@@ -35,15 +35,34 @@ namespace APIClient.Controllers
         [ProducesResponseType(400)]
         public IActionResult CreatePontosRecarga([FromBody] PontoRecargaDTO pontoCreate)
         {
-
-            ModelState.Clear();
             if (pontoCreate == null)
                 return BadRequest(ModelState);
+
+            ModelState.Clear();
 
             if (pontoCreate.Id == null || pontoCreate.Id == Guid.Empty)
                 pontoCreate.Id = Guid.NewGuid();
 
             var pontoRecargaMap = _mapper.Map<PontoRecargaDTO, PontoRecargaModel>(pontoCreate);
+
+            if (!_pontoRecargaRepository.CreatePontoRecarga(pontoRecargaMap))
+            {
+                ModelState.AddModelError("", "Algo deu errado na hora de salvar");
+                return StatusCode(500, ModelState);
+            }
+            return Ok();
+        }
+
+        [HttpPut]
+        public IActionResult UpdatePontoRecarga([FromBody] PontoRecargaDTO pontoUpdate)
+        {
+            if (pontoUpdate== null)
+                return BadRequest(ModelState);
+            ModelState.Clear();
+            if (pontoUpdate.Id == null || pontoUpdate.Id == Guid.Empty)
+                ModelState.AddModelError("","Especifique o Id do ponto de recarga");
+
+            var pontoRecargaMap = _mapper.Map<PontoRecargaDTO, PontoRecargaModel>(pontoUpdate);
 
             if (!_pontoRecargaRepository.CreatePontoRecarga(pontoRecargaMap))
             {

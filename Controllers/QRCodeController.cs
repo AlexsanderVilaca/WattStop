@@ -56,5 +56,25 @@ namespace APIClient.Controllers
             }
             return Ok();
         }
+
+        [HttpPut]
+        public IActionResult UpdateQRCode(Guid? id, [FromBody] QrCodeDTO qrCodeUpdate)
+        {
+            
+            if (qrCodeUpdate== null)
+                return BadRequest(ModelState);
+            ModelState.Clear();
+            if (id == null || id == Guid.Empty)
+                ModelState.AddModelError("","Especifique o Id do QR Code a ser alterado");
+
+            var qrCodeMap = _mapper.Map<QrCodeDTO, QrCodeModel>(qrCodeUpdate);
+
+            if (!_qrCodeRepository.CreateQRCode(qrCodeMap))
+            {
+                ModelState.AddModelError("", "Algo deu errado na hora de salvar");
+                return StatusCode(500, ModelState);
+            }
+            return Ok();
+        }
     }
 }

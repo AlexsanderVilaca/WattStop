@@ -4,6 +4,7 @@ using APIClient.Models;
 using AutoMapper;
 using DataNoSQL.DAL;
 using DataNoSQL.DTC;
+using MongoDB.Driver;
 
 namespace APIClient.Repository
 {
@@ -18,15 +19,14 @@ namespace APIClient.Repository
             _mapper = mapper;
             _DAL = dal;
         }
-        public bool CreateUpdate(UsuarioModel usuario)
+        public bool CreateUsuario(UsuarioModel usuario)
         {
             try
             {
                 _context.Usuario.Add(usuario);
                 if (Save())
                 {
-                    var usuarioModel = _context.Usuario.FirstOrDefault(x => x.Id == usuario.Id);
-                    var usuarioMap = _mapper.Map<UsuariosDTCNoSQL>(usuarioModel);
+                    var usuarioMap = _mapper.Map<UsuariosDTCNoSQL>(usuario);
                     _DAL.Insert(usuarioMap);
                     return true;
                 }
@@ -64,6 +64,28 @@ namespace APIClient.Repository
         {
             var saved = _context.SaveChanges();
             return (saved > 0);
+        }
+
+        public bool UpdateUsuario(UsuarioModel model)
+        {
+            try
+            {
+                _context.Usuario.Update(model);
+                if (Save())
+                {
+                    var usuarioMap = _mapper.Map<UsuariosDTCNoSQL>(model);
+                    var filtro = Builders<UsuariosDTCNoSQL>.Filter.Eq("_id",model.Id);
+                    _DAL.Update(filtro, usuarioMap);
+                    return true;
+                }
+                else
+                    return false;
+            }
+            catch (Exception error)
+            {
+                Console.WriteLine(error.Message);
+                return false;
+            }
         }
     }
 }
