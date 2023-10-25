@@ -21,6 +21,19 @@ namespace APIClient.Controllers
         }
 
         [HttpGet]
+        public IActionResult GetPontoRecarga(Guid pontoRecargaId)
+        {
+            if (!_pontoRecargaRepository.PontoRecargaExists(pontoRecargaId))
+                return NotFound();
+
+            var pontoRecarga = _mapper.Map<PontoRecargaDTO>(_pontoRecargaRepository.GetPontoRecarga(pontoRecargaId));
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(pontoRecarga);
+        }
+
+        [HttpGet]
         [ProducesResponseType(200, Type = typeof(List<PontoRecargaModel>))]
         public IActionResult GetPontosRecarga()
         {

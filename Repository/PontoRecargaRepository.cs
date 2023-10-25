@@ -14,7 +14,7 @@ namespace APIClient.Repository
         private readonly DataContext _context;
         private readonly IMapper _mapper;
         private readonly PontoRecargaDALNoSQL _DAL;
-        public PontoRecargaRepository(DataContext context,IMapper mapper, PontoRecargaDALNoSQL dal)
+        public PontoRecargaRepository(DataContext context, IMapper mapper, PontoRecargaDALNoSQL dal)
         {
             _context = context;
             _mapper = mapper;
@@ -72,7 +72,7 @@ namespace APIClient.Repository
 
         public List<PontoRecargaModel> GetPontosRecarga()
         {
-            return _context.PontoRecarga.OrderBy(p=>p.Id).ToList();
+            return _context.PontoRecarga.OrderBy(p => p.Id).ToList();
         }
 
         public bool PontoRecargaExists(Guid id)
@@ -86,15 +86,20 @@ namespace APIClient.Repository
             return saved > 0 ? true : false;
         }
 
-        public bool UpdatePontoRecarga(PontoRecargaModel pontoRecarga)
+        public bool UpdatePontoRecarga(PontoRecargaModel pontoRecargaModel)
         {
             try
             {
-                _context.PontoRecarga.Update(pontoRecarga);
+                var pontoRecarga = GetPontoRecarga(pontoRecargaModel.Id);
+
+                pontoRecarga.Localizacao = pontoRecargaModel.Localizacao;
+                pontoRecarga.EmpresaId = pontoRecargaModel.EmpresaId;
+                pontoRecarga.TipoCarregador = pontoRecargaModel.TipoCarregador;
+
                 if (Save())
                 {
-                    var pontoRecargaMap = _mapper.Map<PontoRecargaDTCNoSQL>(pontoRecarga);
-                    var filtro = Builders<PontoRecargaDTCNoSQL>.Filter.Eq("_id",pontoRecarga.Id);
+                    var pontoRecargaMap = _mapper.Map<PontoRecargaDTCNoSQL>(pontoRecargaModel);
+                    var filtro = Builders<PontoRecargaDTCNoSQL>.Filter.Eq("_id", pontoRecargaModel.Id);
                     _DAL.Update(filtro, pontoRecargaMap);
                     return true;
                 }

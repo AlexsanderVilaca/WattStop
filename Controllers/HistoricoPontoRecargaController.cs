@@ -2,6 +2,7 @@
 using APIClient.DTO;
 using APIClient.Interfaces;
 using APIClient.Models;
+using APIClient.Repository;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -24,11 +25,24 @@ namespace APIClient.Controllers
         }
 
         [HttpGet]
+        public IActionResult GetSpecifiedLog(Guid logId)
+        {
+            if (!_historicoRepository.HistoricoExists(logId))
+                return NotFound();
+
+            var historicoPontoRecarga = _mapper.Map<HistoricoPontoRecargaDTO>(_historicoRepository.GetHistoricoPontoRecarga(logId));
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(historicoPontoRecarga);
+        }
+
+        [HttpGet]
         [ProducesResponseType(200, Type = typeof(List<HistoricoPontoRecargaModel>))]
         public IActionResult GetHistoricoPontosRecarga()
         {
-            var historicoPontosRecarga = _historicoRepository.GetHistoricoPontosRecarga();
-            
+            var historicoPontosRecarga = _mapper.Map<List<HistoricoPontoRecargaDTO>>(_historicoRepository.GetHistoricoPontosRecarga());
+
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 

@@ -89,7 +89,12 @@ namespace APIClient.Repository
         {
             try
             {
-                _context.Usuario.Update(model);
+                var usuario = GetUsuario(model.User);
+                usuario.Secret= model.Secret;
+                usuario.Ativo = model.Ativo;
+                usuario.DT_Alteracao = DateTime.Now;
+                usuario.TP_Acesso = model.TP_Acesso;
+
                 if (Save())
                 {
                     var usuarioMap = _mapper.Map<UsuariosDTCNoSQL>(model);

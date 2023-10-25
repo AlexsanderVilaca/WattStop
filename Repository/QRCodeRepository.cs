@@ -51,7 +51,11 @@ namespace APIClient.Repository
 
         public bool UpdateQRCode(QrCodeModel model)
         {
-            _context.QrCode.Update(model);
+            var qrCode = GetQRCode(model.Id);
+
+            qrCode.PontoRecargaId = model.PontoRecargaId;
+            qrCode.Conteudo = model.Conteudo;
+
             return Save();
         }
     }

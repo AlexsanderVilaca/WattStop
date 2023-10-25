@@ -25,6 +25,17 @@ namespace APIClient.Controllers
         }
 
         [HttpGet]
+        public IActionResult GetAvaliacao(Guid avaliacaoId)
+        {
+            if (!_repository.AvaliacaoExists(avaliacaoId))
+                return NotFound();
+            var avaliacao = _mapper.Map<AvaliacaoDTO>(_repository.GetAvaliacao(avaliacaoId));
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            return Ok(avaliacao);
+        }
+
+        [HttpGet]
         public IActionResult GetAvaliacoes()
         {
             var avaliacoes = _mapper.Map<List<AvaliacaoDTO>>(_repository.GetAvaliacoes());

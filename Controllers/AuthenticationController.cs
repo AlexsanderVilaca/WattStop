@@ -36,7 +36,9 @@ namespace APIClient.Controllers
         [HttpGet]
         public IActionResult GetUsuario(string user)
         {
-            var usuario = _mapper.Map<List<UsuarioDTO>>(_usuarioRepository.GetUsuario(user));
+            if (!_usuarioRepository.UsuarioExists(user))
+                return NotFound();
+            var usuario = _mapper.Map<UsuarioDTO>(_usuarioRepository.GetUsuario(user));
             if (!ModelState.IsValid)
                 return BadRequest();
 

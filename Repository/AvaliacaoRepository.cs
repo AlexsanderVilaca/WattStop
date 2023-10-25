@@ -46,7 +46,12 @@ namespace APIClient.Repository
         {
             try
             {
-                _context.Avaliacao.Update(model);
+                var avaliacao = GetAvaliacao(model.Id);
+
+                avaliacao.Avaliacao = model.Avaliacao;
+                avaliacao.PontoRecargaId = model.PontoRecargaId;
+                avaliacao.Estrelas = model.Estrelas;
+
                 if (Save())
                 {
                     var avaliacaoMap = _mapper.Map<AvaliacaoDTCNoSQL>(model);

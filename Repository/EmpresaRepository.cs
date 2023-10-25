@@ -68,7 +68,7 @@ namespace APIClient.Repository
         {
             try
             {
-                var empresa = _context.Empresa.First(x => x.Id == empresaModel.Id);
+                var empresa = GetEmpresa(empresaModel.Id.Value);
                 empresa.CNPJ = empresaModel.CNPJ;
                 empresa.Email= empresaModel.Email;
                 empresa.Nome = empresaModel.Nome;
@@ -119,7 +119,7 @@ namespace APIClient.Repository
 
         public bool EmpresaExists(string cnpj)
         {
-            return _context.Empresa.FirstOrDefault(x => x.CNPJ == cnpj) == null;
+            return _context.Empresa.FirstOrDefault(x => x.CNPJ == cnpj) != null;
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using APIClient.DTO;
 using APIClient.Interfaces;
 using APIClient.Models;
-using APIClient.Repository;
+using APIClient.Helper;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,42 +31,30 @@ namespace APIClient.Controllers
             return Ok(empresas);
         }
 
-        private bool ValidarCNPJ(string cnpj, out string msg)
+        [HttpGet]
+        public IActionResult GetEmpresaByCnpj(string cnpj)
         {
-            cnpj = cnpj.Replace(".", "").Replace("/", "").Replace("-", "");
-            msg = "Este CNPJ é válido";
-            if (cnpj.Length != 14)
-            {
-                msg = "O CNPJ deve possuir 14 dígitos";
-                return false;
-            }
-            int[] multiplicadores1 = { 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
-            int[] multiplicadores2 = { 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
+            if (!_empresaRepository.EmpresaExists(cnpj))
+                return NotFound();
+            var empresa = _mapper.Map<EmpresaDTO>(_empresaRepository.GetEmpresa(cnpj));
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            string parte1 = cnpj.Substring(0, 12);
-            string digitoVerificador = cnpj.Substring(12);
+            return Ok(empresa);
+        }
+        [HttpGet]
+        public IActionResult GetEmpresaById(Guid empresaId)
+        {
+            if (!_empresaRepository.EmpresaExists(empresaId))
+                return NotFound();
+            var empresa = _mapper.Map<EmpresaDTO>(_empresaRepository.GetEmpresa(empresaId));
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            int soma = 0;
-
-            for (int i = 0; i < 12; i++)
-                soma += int.Parse(parte1[i].ToString()) * multiplicadores1[i];
-
-            int resto = soma % 11;
-
-            int digito1 = resto < 2 ? 0 : 11 - resto;
-
-            soma = 0;
-            parte1 = parte1 + digito1;
-            for (int i = 0; i < 13; i++)
-                soma += int.Parse(parte1[i].ToString()) * multiplicadores2[i];
-
-            resto = soma % 11;
-
-            int digito2 = resto < 2 ? 0 : 11 - resto;
-
-            return digitoVerificador == $"{digito1}{digito2}";
+            return Ok(empresa);
         }
 
+        
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
@@ -84,7 +72,7 @@ namespace APIClient.Controllers
             if (empresaCreate.DataInclusao == DateTime.MinValue || empresaCreate.DataInclusao == DateTime.MaxValue)
                 empresaCreate.DataInclusao = DateTime.Now;
 
-            if (ValidarCNPJ(empresaCreate.CNPJ, out msg) == false)
+            if (new ValidationHelper().ValidarCNPJ(empresaCreate.CNPJ, out msg) == false)
                 ModelState.AddModelError("", "Este CNPJ não é valido. " + msg);
 
             if (_empresaRepository.GetEmpresa(empresaCreate.CNPJ) != null)
@@ -117,10 +105,12 @@ namespace APIClient.Controllers
             if (empresaUpdate.Id == null || empresaUpdate.Id == Guid.Empty)
                 ModelState.AddModelError("", "Especifique o Id da empresa a ser alterada");
 
-            if (ValidarCNPJ(empresaUpdate.CNPJ, out msg) == false)
+            if (new ValidationHelper().ValidarCNPJ(empresaUpdate.CNPJ, out msg) == false)
                 ModelState.AddModelError("", "Este CNPJ não é valido. " + msg);
 
-            if (_empresaRepository.GetEmpresa(empresaUpdate.CNPJ) != null && _empresaRepository.GetEmpresa(empresaUpdate.CNPJ).Id != empresaUpdate.Id)
+            var empresa = _empresaRepository.GetEmpresa(empresaUpdate.CNPJ);
+
+            if (empresa != null && empresa.Id != empresaUpdate.Id)
                 ModelState.AddModelError("", "Já existe uma empresa com este CNPJ");
 
 
