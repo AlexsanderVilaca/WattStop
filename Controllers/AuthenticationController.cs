@@ -2,6 +2,7 @@
 using APIClient.Interfaces;
 using APIClient.Repository;
 using AutoMapper;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APIClient.Controllers
@@ -17,6 +18,7 @@ namespace APIClient.Controllers
             _mapper = mapper;
             _usuarioRepository = usuarioRepository;
         }
+        [EnableCors]
         [HttpPost]
         public IActionResult Login([FromBody] UsuarioDTO dto)
         {
