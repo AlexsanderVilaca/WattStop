@@ -3,6 +3,7 @@ using APIClient.Interfaces;
 using APIClient.Models;
 using APIClient.Repository;
 using AutoMapper;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APIClient.Controllers
@@ -18,6 +19,7 @@ namespace APIClient.Controllers
             _mapper = mapper;
             _usuarioRepository = usuarioRepository;
         }
+        [EnableCors]
         [HttpPost]
         public IActionResult SignUp([FromBody] UsuarioDTO dto)
         {
