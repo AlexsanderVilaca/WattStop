@@ -21,6 +21,19 @@ namespace APIClient.Controllers
         }
 
         [HttpGet]
+        public IActionResult GetPontosRecargaByEmpresa(Guid empresaId)
+        {
+            if (!_pontoRecargaRepository.PontoRecargaEmpresaExists(empresaId))
+                return NotFound();
+
+            var pontoRecarga = _mapper.Map<List<PontoRecargaDTO>>(_pontoRecargaRepository.GetPontosRecargaByEmpresa(empresaId));
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(pontoRecarga);
+        }
+
+        [HttpGet]
         public IActionResult GetPontoRecarga(Guid pontoRecargaId)
         {
             if (!_pontoRecargaRepository.PontoRecargaExists(pontoRecargaId))
@@ -70,7 +83,7 @@ namespace APIClient.Controllers
         [HttpPut]
         public IActionResult UpdatePontoRecarga([FromBody] PontoRecargaDTO pontoUpdate)
         {
-            if (pontoUpdate== null)
+            if (pontoUpdate == null)
                 return BadRequest(ModelState);
             ModelState.Clear();
             if (pontoUpdate.Id == null || pontoUpdate.Id == Guid.Empty)

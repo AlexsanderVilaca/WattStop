@@ -14,7 +14,7 @@ namespace APIClient.Repository
         private readonly DataContext _context;
         private readonly IMapper _mapper;
         private readonly HistoricoPontoRecargaDALNoSQL _DAL;
-        public HistoricoRepository(DataContext context,IMapper mapper, HistoricoPontoRecargaDALNoSQL dal)
+        public HistoricoRepository(DataContext context, IMapper mapper, HistoricoPontoRecargaDALNoSQL dal)
         {
             _context = context;
             _mapper = mapper;
@@ -40,6 +40,11 @@ namespace APIClient.Repository
                 Console.WriteLine(error.Message);
                 return false;
             }
+        }
+
+        public List<HistoricoPontoRecargaModel> GetHistoricoByPontoRecarga(Guid pontoRecargaId)
+        {
+            return _context.HistoricoPontoRecarga.Where(x => x.PontoRecargaId == pontoRecargaId).ToList();
         }
 
         public HistoricoPontoRecargaModel GetHistoricoPontoRecarga(Guid id)

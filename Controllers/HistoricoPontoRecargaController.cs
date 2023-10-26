@@ -25,6 +25,19 @@ namespace APIClient.Controllers
         }
 
         [HttpGet]
+        public IActionResult GetLogsByPontoRecarga(Guid pontoRecargaId)
+        {
+            if (!_historicoRepository.HistoricoPontoExists(pontoRecargaId))
+                return NotFound();
+
+            var historicoPontoRecarga = _mapper.Map<List<HistoricoPontoRecargaDTO>>(_historicoRepository.GetHistoricoByPontoRecarga(pontoRecargaId));
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(historicoPontoRecarga);
+        }
+
+        [HttpGet]
         public IActionResult GetSpecifiedLog(Guid logId)
         {
             if (!_historicoRepository.HistoricoExists(logId))

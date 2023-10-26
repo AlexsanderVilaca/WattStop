@@ -75,6 +75,16 @@ namespace APIClient.Repository
             return _context.PontoRecarga.OrderBy(p => p.Id).ToList();
         }
 
+        public List<PontoRecargaModel> GetPontosRecargaByEmpresa(Guid empresaId)
+        {
+            return _context.PontoRecarga.Where(p => p.EmpresaId == empresaId).ToList();
+        }
+
+        public bool PontoRecargaEmpresaExists(Guid empresaId)
+        {
+            return _context.PontoRecarga.FirstOrDefault(x => x.EmpresaId == empresaId) != null;
+        }
+
         public bool PontoRecargaExists(Guid id)
         {
             return _context.PontoRecarga.FirstOrDefault(x => x.Id == id) != null;

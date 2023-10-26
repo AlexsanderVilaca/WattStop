@@ -121,5 +121,15 @@ namespace APIClient.Repository
         {
             return _context.Empresa.FirstOrDefault(x => x.CNPJ == cnpj) != null;
         }
+
+        public bool SearchEmpresasByName(string nomeEmpresa)
+        {
+            return _context.Empresa.FirstOrDefault(x => x.Nome.Contains(nomeEmpresa)) != null;
+        }
+
+        public List<EmpresaModel> GetEmpresasByName(string name)
+        {
+            return _context.Empresa.Where(x => x.Nome.Contains(name)).ToList();
+        }
     }
 }

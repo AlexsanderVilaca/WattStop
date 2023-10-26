@@ -53,7 +53,17 @@ namespace APIClient.Controllers
 
             return Ok(empresa);
         }
+        [HttpGet]
+        public IActionResult GetEmpresasByName(string name)
+        {
+            if (!_empresaRepository.SearchEmpresasByName(name))
+                return NotFound();
+            var empresa = _mapper.Map<List<EmpresaDTO>>(_empresaRepository.GetEmpresasByName(name));
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
+            return Ok(empresa);
+        }
         
         [HttpPost]
         [ProducesResponseType(204)]
