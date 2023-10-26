@@ -62,6 +62,11 @@ namespace APIClient.Repository
             return _context.HistoricoPontoRecarga.FirstOrDefault(x => x.Id == id) != null;
         }
 
+        public bool HistoricoPontoExists(Guid pontoRecargaId)
+        {
+            return _context.HistoricoPontoRecarga.FirstOrDefault(x => x.PontoRecargaId == pontoRecargaId) != null;
+        }
+
         public bool Save()
         {
             var saved = _context.SaveChanges();
