@@ -1,5 +1,6 @@
 ﻿using APIClient.DTO;
 using APIClient.Interfaces;
+using APIClient.Models;
 using APIClient.Repository;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +18,30 @@ namespace APIClient.Controllers
             _mapper = mapper;
             _usuarioRepository = usuarioRepository;
         }
+        [HttpPost]
+        public IActionResult SignUp([FromBody] UsuarioDTO dto)
+        {
+            if (dto == null)
+                return BadRequest("Preencha todos os dados do usuário");
+            if (string.IsNullOrEmpty(dto.User))
+                return BadRequest("Preencha o nome de usuário");
+            if (string.IsNullOrEmpty(dto.Secret))
+                return BadRequest("Preencha a senha");
+            if (string.IsNullOrEmpty(dto.TP_Acesso))
+                return BadRequest("Preencha o tipo de acesso do usuário");
+            if (_usuarioRepository.GetUsuario(dto.User) != null)
+                return BadRequest("Este usuário já está cadastrado");
+
+            var user = _mapper.Map<UsuarioModel>(dto);
+            if (!_usuarioRepository.CreateUsuario(user))
+            {
+                ModelState.AddModelError("", "Algo deu errado na hora de salvar");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok();
+        }
+
         [HttpPost]
         public IActionResult Login([FromBody] UsuarioDTO dto)
         {
