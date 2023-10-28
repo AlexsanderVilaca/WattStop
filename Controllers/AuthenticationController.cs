@@ -53,6 +53,30 @@ namespace APIClient.Controllers
             return Ok();
         }
 
+        [HttpPut]
+        public IActionResult UpdateUser([FromBody] UsuarioDTO dto)
+        {
+            if (dto == null)
+                return BadRequest("Preencha todos os dados do usuário");
+            if (string.IsNullOrEmpty(dto.User))
+                return BadRequest("Preencha o nome de usuário");
+            if (string.IsNullOrEmpty(dto.Secret))
+                return BadRequest("Preencha a senha");
+            if (string.IsNullOrEmpty(dto.TP_Acesso))
+                return BadRequest("Preencha o tipo de acesso do usuário");
+            if (_usuarioRepository.GetUsuario(dto.User) != null)
+                return BadRequest("Este usuário já está cadastrado");
+
+            var user = _mapper.Map<UsuarioModel>(dto);
+            if (!_usuarioRepository.UpdateUsuario(user))
+            {
+                ModelState.AddModelError("", "Algo deu errado na hora de salvar");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok();
+        }
+
         [HttpGet]
         public IActionResult GetUsuarios()
         {
