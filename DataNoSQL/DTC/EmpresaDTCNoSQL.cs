@@ -12,11 +12,11 @@ namespace DataNoSQL.DTC
         [BsonId]
         public Guid Id { get; set; }
         [BsonElement]
-        public string Nome { get; set; }
+        public string? Nome { get; set; }
         [BsonElement]
-        public string CNPJ { get; set; }
+        public string? CNPJ { get; set; }
         [BsonElement]
-        public string Email { get; set; }
+        public string? Email { get; set; }
         [BsonElement]
         public DateTime DataInclusao { get; set; }
 

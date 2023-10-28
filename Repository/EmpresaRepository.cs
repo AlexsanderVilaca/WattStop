@@ -68,7 +68,7 @@ namespace APIClient.Repository
         {
             try
             {
-                var empresa = GetEmpresa(empresaModel.Id.Value);
+                var empresa = GetEmpresa(empresaModel.Id);
                 empresa.CNPJ = empresaModel.CNPJ;
                 empresa.Email= empresaModel.Email;
                 empresa.Nome = empresaModel.Nome;

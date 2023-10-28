@@ -1,4 +1,5 @@
 ﻿using APIClient.Data;
+using APIClient.Helper;
 using APIClient.Interfaces;
 using APIClient.Models;
 using AutoMapper;
@@ -13,7 +14,7 @@ namespace APIClient.Repository
         private readonly DataContext _context;
         private readonly IMapper _mapper;
         private readonly UsuariosDALNoSQL _DAL;
-        public UsuarioRepository(DataContext context,IMapper mapper, UsuariosDALNoSQL dal)
+        public UsuarioRepository(DataContext context, IMapper mapper, UsuariosDALNoSQL dal)
         {
             _context = context;
             _mapper = mapper;
@@ -23,6 +24,7 @@ namespace APIClient.Repository
         {
             try
             {
+                usuario.Secret = EncriptionHelper.EncriptaString(usuario.Secret);
                 _context.Usuario.Add(usuario);
                 if (Save())
                 {
@@ -70,7 +72,7 @@ namespace APIClient.Repository
                 var usr = GetUsuario(user);
                 if (usr != null)
                 {
-                    if (usr.Secret == secret)
+                    if (usr.Secret == EncriptionHelper.EncriptaString(secret))
                         return true;
                 }
             }
@@ -90,7 +92,7 @@ namespace APIClient.Repository
             try
             {
                 var usuario = GetUsuario(model.User);
-                usuario.Secret= model.Secret;
+                usuario.Secret = model.Secret;
                 usuario.Ativo = model.Ativo;
                 usuario.DT_Alteracao = DateTime.Now;
                 usuario.TP_Acesso = model.TP_Acesso;
@@ -98,7 +100,7 @@ namespace APIClient.Repository
                 if (Save())
                 {
                     var usuarioMap = _mapper.Map<UsuariosDTCNoSQL>(model);
-                    var filtro = Builders<UsuariosDTCNoSQL>.Filter.Eq("_id",model.Id);
+                    var filtro = Builders<UsuariosDTCNoSQL>.Filter.Eq("_id", model.Id);
                     _DAL.Update(filtro, usuarioMap);
                     return true;
                 }

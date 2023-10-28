@@ -12,7 +12,7 @@ namespace DataNoSQL.DTC
         [BsonId]
         public Guid Id { get; set; }
         [BsonElement]
-        public string Avaliacao { get; set; }
+        public string? Avaliacao { get; set; }
         [BsonElement]
         public decimal Estrelas { get; set; }
         [BsonElement]

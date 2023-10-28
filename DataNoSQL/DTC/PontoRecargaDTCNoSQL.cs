@@ -12,11 +12,11 @@ namespace DataNoSQL.DTC
         [BsonId]
         public Guid Id { get; set; }
         [BsonElement]
-        public string TipoCarregador { get; set; }
+        public string? TipoCarregador { get; set; }
         [BsonElement]
         public Guid EmpresaId { get; set; }
         [BsonElement]
-        public string Localizacao { get; set; }
+        public string? Localizacao { get; set; }
         [BsonElement]
         public DateTime DataInclusao { get; set; }
     }

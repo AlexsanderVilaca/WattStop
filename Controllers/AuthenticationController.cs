@@ -25,6 +25,8 @@ namespace APIClient.Controllers
         {
             if (dto == null)
                 return BadRequest("Preencha todos os dados do usuário");
+            if (dto.Id.HasValue == false || dto.Id == Guid.Empty)
+                dto.Id = Guid.NewGuid();
             if (string.IsNullOrEmpty(dto.User))
                 return BadRequest("Preencha o nome de usuário");
             if (string.IsNullOrEmpty(dto.Secret))
@@ -45,9 +47,9 @@ namespace APIClient.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login([FromBody] UsuarioDTO dto)
+        public IActionResult Login([FromBody] LoginModel user )
         {
-            bool _isLoginValid = _usuarioRepository.ValidateUsuario(dto.User, dto.Secret);
+            bool _isLoginValid = _usuarioRepository.ValidateUsuario(user.User, user.Secret);
             return Ok();
         }
 
