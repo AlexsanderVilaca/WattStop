@@ -1,6 +1,7 @@
 {
   "format": 1,
   "restore": {
+<<<<<<< HEAD
     "Z:\\EC8\\WattStop\\APIClient.csproj": {}
   },
   "projects": {
@@ -22,6 +23,23 @@
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+=======
+    "C:\\Users\\arosm7\\Documents\\Faculdade\\backend\\APIClient.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\arosm7\\Documents\\Faculdade\\backend\\APIClient.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\arosm7\\Documents\\Faculdade\\backend\\APIClient.csproj",
+        "projectName": "APIClient",
+        "projectPath": "C:\\Users\\arosm7\\Documents\\Faculdade\\backend\\APIClient.csproj",
+        "packagesPath": "C:\\Users\\arosm7\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\arosm7\\Documents\\Faculdade\\backend\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\arosm7\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+>>>>>>> 5785a8a50ea3952f65da488474cd88b1924c9a86
         ],
         "originalTargetFrameworks": [
           "net6.0"

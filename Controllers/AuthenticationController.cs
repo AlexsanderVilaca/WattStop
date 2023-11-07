@@ -56,8 +56,19 @@ namespace APIClient.Controllers
         [HttpPost]
         public IActionResult Login([FromBody] LoginModel user )
         {
-            bool _isLoginValid = _usuarioRepository.ValidateUsuario(user.User, user.Secret);
-            return Ok();
+            try
+            {
+                bool isLoginValid = _usuarioRepository.ValidateUsuario(user.User, user.Secret);
+
+                if (isLoginValid)
+                    return Ok("Login bem-sucedido");
+                else
+                    return Unauthorized("Login inválido, email ou senha incorretos");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPut]
@@ -87,11 +98,19 @@ namespace APIClient.Controllers
         [HttpGet]
         public IActionResult GetUsuarios()
         {
-            var usuarios = _mapper.Map<List<UsuarioDTO>>(_usuarioRepository.GetUsuarios());
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            try
+            {
+                var usuarios = _mapper.Map<List<UsuarioDTO>>(_usuarioRepository.GetUsuarios());
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
 
-            return Ok(usuarios);
+                return Ok(usuarios);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
         }
         [HttpGet]
         public IActionResult GetUsuario(string user)
