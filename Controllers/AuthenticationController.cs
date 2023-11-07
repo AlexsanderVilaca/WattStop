@@ -3,8 +3,12 @@ using APIClient.Interfaces;
 using APIClient.Models;
 using APIClient.Repository;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace APIClient.Controllers
 {
@@ -14,8 +18,11 @@ namespace APIClient.Controllers
     {
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly IMapper _mapper;
-        public UsuarioController(IMapper mapper, IUsuarioRepository usuarioRepository)
+        private readonly IConfiguration _config;
+
+        public UsuarioController(IMapper mapper, IUsuarioRepository usuarioRepository,IConfiguration config)
         {
+            _config = config;
             _mapper = mapper;
             _usuarioRepository = usuarioRepository;
         }
@@ -121,5 +128,6 @@ namespace APIClient.Controllers
 
         }
 
+      
     }
 }
