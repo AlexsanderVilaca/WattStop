@@ -15,6 +15,7 @@ namespace APIClient.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
+
     public class UsuarioController : Controller
     {
         private readonly IUsuarioRepository _usuarioRepository;
@@ -51,7 +52,26 @@ namespace APIClient.Controllers
                 return StatusCode(500, ModelState);
             }
 
-            return Ok();
+            return Ok(GenerateToken(new LoginModel { User=dto.User,Secret=dto.Secret}));
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult LoginTeste([FromBody] LoginModel user)
+        {
+            bool isLoginValid = _usuarioRepository.ValidateUsuario(user.User, user.Secret);
+
+            if (isLoginValid == false)
+                return NotFound(new { message = "Usuário ou senha inválidos" });
+
+            var token = GenerateToken(user);
+
+            return Ok(new
+            {
+                User = user.User,
+                Token = token
+            });
+
         }
 
         [HttpPost]
@@ -97,6 +117,7 @@ namespace APIClient.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult GetUsuarios()
         {
             try
@@ -149,39 +170,32 @@ namespace APIClient.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost]
-        public IActionResult GenerateToken([FromBody] LoginModel user)
+        private string GenerateToken(LoginModel user)
         {
-            if (user.User == "teste" && user.Secret == "123456")
+
+            var issuer = _config["Jwt:Issuer"];
+            var audience = _config["Jwt:Audience"];
+            var key = Encoding.ASCII.GetBytes
+            (_config["Jwt:Key"]);
+            var tokenDescriptor = new SecurityTokenDescriptor
             {
-                var issuer = _config["Jwt:Issuer"];
-                var audience = _config["Jwt:Audience"];
-                var key = Encoding.ASCII.GetBytes
-                (_config["Jwt:Key"]);
-                var tokenDescriptor = new SecurityTokenDescriptor
+                Subject = new ClaimsIdentity(new[]
                 {
-                    Subject = new ClaimsIdentity(new[]
-                    {
                 new Claim("Id", Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Sub, user.User),
                 new Claim(JwtRegisteredClaimNames.Email, user.User),
                 new Claim(JwtRegisteredClaimNames.Jti,
                 Guid.NewGuid().ToString())
              }),
-                    Expires = DateTime.UtcNow.AddMinutes(5),
-                    Issuer = issuer,
-                    Audience = audience,
-                    SigningCredentials = new SigningCredentials
-                    (new SymmetricSecurityKey(key),
-                    SecurityAlgorithms.HmacSha512Signature)
-                };
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var token = tokenHandler.CreateToken(tokenDescriptor);
-                var jwtToken = tokenHandler.WriteToken(token);
-                var stringToken = tokenHandler.WriteToken(token);
-                return Ok(stringToken);
-            }
-            return Unauthorized();
+                Expires = DateTime.UtcNow.AddHours(8),
+                Issuer = issuer,
+                Audience = audience,
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
+            };
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var jwtToken = tokenHandler.WriteToken(token);
+
+            return jwtToken;
 
         }
     }
