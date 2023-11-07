@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 
 namespace APIClient.Controllers
 {
@@ -20,7 +21,7 @@ namespace APIClient.Controllers
         private readonly IMapper _mapper;
         private readonly IConfiguration _config;
 
-        public UsuarioController(IMapper mapper, IUsuarioRepository usuarioRepository,IConfiguration config)
+        public UsuarioController(IMapper mapper, IUsuarioRepository usuarioRepository, IConfiguration config)
         {
             _config = config;
             _mapper = mapper;
@@ -54,7 +55,7 @@ namespace APIClient.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login([FromBody] LoginModel user )
+        public IActionResult Login([FromBody] LoginModel user)
         {
             try
             {
@@ -110,7 +111,7 @@ namespace APIClient.Controllers
             {
                 return BadRequest(ex.Message);
             }
-            
+
         }
         [HttpGet]
         public IActionResult GetUsuario(string user)
@@ -147,6 +148,41 @@ namespace APIClient.Controllers
 
         }
 
-      
+        [AllowAnonymous]
+        [HttpPost]
+        public IActionResult GenerateToken([FromBody] LoginModel user)
+        {
+            if (user.User == "teste" && user.Secret == "123456")
+            {
+                var issuer = _config["Jwt:Issuer"];
+                var audience = _config["Jwt:Audience"];
+                var key = Encoding.ASCII.GetBytes
+                (_config["Jwt:Key"]);
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(new[]
+                    {
+                new Claim("Id", Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Sub, user.User),
+                new Claim(JwtRegisteredClaimNames.Email, user.User),
+                new Claim(JwtRegisteredClaimNames.Jti,
+                Guid.NewGuid().ToString())
+             }),
+                    Expires = DateTime.UtcNow.AddMinutes(5),
+                    Issuer = issuer,
+                    Audience = audience,
+                    SigningCredentials = new SigningCredentials
+                    (new SymmetricSecurityKey(key),
+                    SecurityAlgorithms.HmacSha512Signature)
+                };
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+                var jwtToken = tokenHandler.WriteToken(token);
+                var stringToken = tokenHandler.WriteToken(token);
+                return Ok(stringToken);
+            }
+            return Unauthorized();
+
+        }
     }
 }
