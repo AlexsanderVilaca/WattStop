@@ -4,6 +4,7 @@ using APIClient.Interfaces;
 using APIClient.Models;
 using APIClient.Repository;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -21,10 +22,10 @@ namespace APIClient.Controllers
         public AvaliacaoController(IMapper mapper, IAvaliacaoRepository repository)
         {
             _repository = repository;
-            _mapper= mapper;
+            _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet, Authorize]
         public IActionResult GetAvaliacao(Guid avaliacaoId)
         {
             if (!_repository.AvaliacaoExists(avaliacaoId))
@@ -35,7 +36,7 @@ namespace APIClient.Controllers
             return Ok(avaliacao);
         }
 
-        [HttpGet]
+        [HttpGet, Authorize]
         public IActionResult GetAvaliacoes()
         {
             var avaliacoes = _mapper.Map<List<AvaliacaoDTO>>(_repository.GetAvaliacoes());
@@ -43,11 +44,11 @@ namespace APIClient.Controllers
                 return BadRequest(ModelState);
             return Ok(avaliacoes);
         }
-        [HttpPost]
+        [HttpPost, Authorize]
         public IActionResult CreateAvaliacao([FromBody] AvaliacaoDTO avaliacaoCreate)
         {
             ModelState.Clear();
-            
+
             if (avaliacaoCreate.Id == null || avaliacaoCreate.Id == Guid.Empty)
                 avaliacaoCreate.Id = Guid.NewGuid();
 
@@ -64,13 +65,13 @@ namespace APIClient.Controllers
             return Ok();
         }
 
-        [HttpPut]
+        [HttpPut, Authorize]
         public IActionResult UpdateAvaliacao([FromBody] AvaliacaoDTO avaliacaoUpdate)
         {
             ModelState.Clear();
 
             if (avaliacaoUpdate.Id == null || avaliacaoUpdate.Id == Guid.Empty)
-                ModelState.AddModelError("","Especifique o Id da avaliação a ser alterada");
+                ModelState.AddModelError("", "Especifique o Id da avaliação a ser alterada");
 
             if (_repository.AvaliacaoExists(avaliacaoUpdate.Id.Value) == false)
                 return NotFound();
@@ -88,7 +89,7 @@ namespace APIClient.Controllers
             return Ok();
         }
 
-        [HttpDelete]
+        [HttpDelete, Authorize]
         public IActionResult DeleteAvaliacao(Guid avaliacaoId)
         {
             ModelState.Clear();
@@ -96,7 +97,7 @@ namespace APIClient.Controllers
             if (avaliacaoId == Guid.Empty)
                 ModelState.AddModelError("", "Especifique o Id da avaliação a ser alterada");
 
-            if(_repository.AvaliacaoExists(avaliacaoId) == false)
+            if (_repository.AvaliacaoExists(avaliacaoId) == false)
                 return NotFound();
 
             if (!ModelState.IsValid)

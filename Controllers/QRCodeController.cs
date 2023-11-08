@@ -4,6 +4,7 @@ using APIClient.Interfaces;
 using APIClient.Models;
 using APIClient.Repository;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace APIClient.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet, Authorize]
         public IActionResult GetQrCode(Guid qrCodeId)
         {
             if (!_qrCodeRepository.QRCodeExists(qrCodeId))
@@ -37,8 +38,7 @@ namespace APIClient.Controllers
             return Ok(qrCode);
         }
 
-        [HttpGet]
-        [ProducesResponseType(200, Type = typeof(List<QrCodeModel>))]
+        [HttpGet, Authorize]
         public IActionResult GetQRCodes()
         {
             var qrCodes = _mapper.Map<List<QrCodeDTO>>(_qrCodeRepository.GetQrCodes());
@@ -48,9 +48,7 @@ namespace APIClient.Controllers
             return Ok(qrCodes);
         }
 
-        [HttpPost]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
+        [HttpPost, Authorize]
         public IActionResult CreateQRCode([FromBody] QrCodeDTO qrCodeCreate)
         {
 
@@ -71,15 +69,15 @@ namespace APIClient.Controllers
             return Ok();
         }
 
-        [HttpPut]
+        [HttpPut, Authorize]
         public IActionResult UpdateQRCode([FromBody] QrCodeDTO qrCodeUpdate)
         {
-            
-            if (qrCodeUpdate== null)
+
+            if (qrCodeUpdate == null)
                 return BadRequest(ModelState);
             ModelState.Clear();
-            if (qrCodeUpdate.Id == null || qrCodeUpdate.Id== Guid.Empty)
-                ModelState.AddModelError("","Especifique o Id do QR Code a ser alterado");
+            if (qrCodeUpdate.Id == null || qrCodeUpdate.Id == Guid.Empty)
+                ModelState.AddModelError("", "Especifique o Id do QR Code a ser alterado");
 
             var qrCodeMap = _mapper.Map<QrCodeDTO, QrCodeModel>(qrCodeUpdate);
 
@@ -91,7 +89,7 @@ namespace APIClient.Controllers
             return Ok();
         }
 
-        [HttpDelete]
+        [HttpDelete, Authorize]
         public IActionResult DeleteQRCode(Guid qrCodeId)
         {
             ModelState.Clear();

@@ -692,3 +692,4 @@ C:\Users\arosm7\Documents\Faculdade\backend\obj\Debug\net6.0\APIClient.pdb
 C:\Users\arosm7\Documents\Faculdade\backend\obj\Debug\net6.0\APIClient.genruntimeconfig.cache
 C:\Users\arosm7\Documents\Faculdade\backend\obj\Debug\net6.0\ref\APIClient.dll
 D:\Microsoft Visual Studio\source\repos\WattStop\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+Z:\EC8\WattStop\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

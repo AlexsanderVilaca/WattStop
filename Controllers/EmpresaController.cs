@@ -4,6 +4,7 @@ using APIClient.Models;
 using APIClient.Helper;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace APIClient.Controllers
 {
@@ -19,9 +20,7 @@ namespace APIClient.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
-        [ProducesResponseType(200, Type = typeof(List<EmpresaModel>))]
-        [ProducesResponseType(400)]
+        [HttpGet, Authorize]
         public IActionResult GetEmpresas()
         {
             var empresas = _mapper.Map<List<EmpresaDTO>>(_empresaRepository.GetEmpresas());
@@ -31,7 +30,7 @@ namespace APIClient.Controllers
             return Ok(empresas);
         }
 
-        [HttpGet]
+        [HttpGet, Authorize]
         public IActionResult GetEmpresaByCnpj(string cnpj)
         {
             if (!_empresaRepository.EmpresaExists(cnpj))
@@ -42,7 +41,7 @@ namespace APIClient.Controllers
 
             return Ok(empresa);
         }
-        [HttpGet]
+        [HttpGet, Authorize]
         public IActionResult GetEmpresaById(Guid empresaId)
         {
             if (!_empresaRepository.EmpresaExists(empresaId))
@@ -53,7 +52,7 @@ namespace APIClient.Controllers
 
             return Ok(empresa);
         }
-        [HttpGet]
+        [HttpGet, Authorize]
         public IActionResult GetEmpresasByName(string name)
         {
             if (!_empresaRepository.SearchEmpresasByName(name))
@@ -64,10 +63,8 @@ namespace APIClient.Controllers
 
             return Ok(empresa);
         }
-        
-        [HttpPost]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
+
+        [HttpPost, Authorize]
         public IActionResult CreateEmpresa([FromBody] EmpresaDTO empresaCreate)
         {
             ModelState.Clear();
@@ -103,7 +100,7 @@ namespace APIClient.Controllers
             return Ok();
         }
 
-        [HttpPut]
+        [HttpPut, Authorize]
         public IActionResult UpdateEmpresa([FromBody] EmpresaDTO empresaUpdate)
         {
             ModelState.Clear();
@@ -138,7 +135,7 @@ namespace APIClient.Controllers
             return Ok();
         }
 
-        [HttpDelete]
+        [HttpDelete, Authorize]
         public IActionResult DeleteEmpresa(Guid empresaId)
         {
             ModelState.Clear();

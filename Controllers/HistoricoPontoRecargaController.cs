@@ -4,6 +4,7 @@ using APIClient.Interfaces;
 using APIClient.Models;
 using APIClient.Repository;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace APIClient.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet, Authorize]
         public IActionResult GetLogsByPontoRecarga(Guid pontoRecargaId)
         {
             if (!_historicoRepository.HistoricoPontoExists(pontoRecargaId))
@@ -37,7 +38,7 @@ namespace APIClient.Controllers
             return Ok(historicoPontoRecarga);
         }
 
-        [HttpGet]
+        [HttpGet, Authorize]
         public IActionResult GetSpecifiedLog(Guid logId)
         {
             if (!_historicoRepository.HistoricoExists(logId))
@@ -50,8 +51,7 @@ namespace APIClient.Controllers
             return Ok(historicoPontoRecarga);
         }
 
-        [HttpGet]
-        [ProducesResponseType(200, Type = typeof(List<HistoricoPontoRecargaModel>))]
+        [HttpGet, Authorize]
         public IActionResult GetHistoricoPontosRecarga()
         {
             var historicoPontosRecarga = _mapper.Map<List<HistoricoPontoRecargaDTO>>(_historicoRepository.GetHistoricoPontosRecarga());
@@ -62,9 +62,7 @@ namespace APIClient.Controllers
             return Ok(historicoPontosRecarga);
         }
 
-        [HttpPost]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
+        [HttpPost, Authorize]
         public IActionResult CreateHistoricoPontoRecarga([FromBody] HistoricoPontoRecargaDTO historicoPontoCreate)
         {
 

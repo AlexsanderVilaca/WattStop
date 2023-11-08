@@ -4,6 +4,7 @@ using APIClient.Interfaces;
 using APIClient.Models;
 using APIClient.Repository;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APIClient.Controllers
@@ -20,7 +21,7 @@ namespace APIClient.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet, Authorize]
         public IActionResult GetPontosRecargaByEmpresa(Guid empresaId)
         {
             if (!_pontoRecargaRepository.PontoRecargaEmpresaExists(empresaId))
@@ -33,7 +34,7 @@ namespace APIClient.Controllers
             return Ok(pontoRecarga);
         }
 
-        [HttpGet]
+        [HttpGet, Authorize]
         public IActionResult GetPontoRecarga(Guid pontoRecargaId)
         {
             if (!_pontoRecargaRepository.PontoRecargaExists(pontoRecargaId))
@@ -46,8 +47,7 @@ namespace APIClient.Controllers
             return Ok(pontoRecarga);
         }
 
-        [HttpGet]
-        [ProducesResponseType(200, Type = typeof(List<PontoRecargaModel>))]
+        [HttpGet, Authorize]
         public IActionResult GetPontosRecarga()
         {
             var pontosRecarga = _mapper.Map<List<PontoRecargaDTO>>(_pontoRecargaRepository.GetPontosRecarga());
@@ -57,9 +57,7 @@ namespace APIClient.Controllers
             return Ok(pontosRecarga);
         }
 
-        [HttpPost]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
+        [HttpPost, Authorize]
         public IActionResult CreatePontosRecarga([FromBody] PontoRecargaDTO pontoCreate)
         {
             if (pontoCreate == null)
@@ -80,7 +78,7 @@ namespace APIClient.Controllers
             return Ok();
         }
 
-        [HttpPut]
+        [HttpPut, Authorize]
         public IActionResult UpdatePontoRecarga([FromBody] PontoRecargaDTO pontoUpdate)
         {
             if (pontoUpdate == null)
@@ -102,7 +100,7 @@ namespace APIClient.Controllers
             return Ok();
         }
 
-        [HttpDelete]
+        [HttpDelete, Authorize]
         public IActionResult DeletePontoRecarga(Guid pontoRecargaId)
         {
             ModelState.Clear();

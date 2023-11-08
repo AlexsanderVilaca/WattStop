@@ -28,8 +28,9 @@ namespace APIClient.Controllers
             _mapper = mapper;
             _usuarioRepository = usuarioRepository;
         }
+
         [EnableCors]
-        [HttpPost]
+        [HttpPost, AllowAnonymous]
         public IActionResult SignUp([FromBody] UsuarioDTO dto)
         {
             if (dto == null)
@@ -51,30 +52,11 @@ namespace APIClient.Controllers
                 ModelState.AddModelError("", "Algo deu errado na hora de salvar");
                 return StatusCode(500, ModelState);
             }
-
-            return Ok(GenerateToken(new LoginModel { User=dto.User,Secret=dto.Secret}));
+            user.Secret = "";
+            return Ok(user);
         }
 
-        [Authorize]
-        [HttpPost]
-        public IActionResult LoginTeste([FromBody] LoginModel user)
-        {
-            bool isLoginValid = _usuarioRepository.ValidateUsuario(user.User, user.Secret);
-
-            if (isLoginValid == false)
-                return NotFound(new { message = "Usuário ou senha inválidos" });
-
-            var token = GenerateToken(user);
-
-            return Ok(new
-            {
-                User = user.User,
-                Token = token
-            });
-
-        }
-
-        [HttpPost]
+        [HttpPost, AllowAnonymous]
         public IActionResult Login([FromBody] LoginModel user)
         {
             try
@@ -92,7 +74,7 @@ namespace APIClient.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPut, Authorize]
         public IActionResult UpdateUser([FromBody] UsuarioDTO dto)
         {
             if (dto == null)
@@ -146,7 +128,7 @@ namespace APIClient.Controllers
             return Ok(usuario);
         }
 
-        [HttpDelete]
+        [HttpDelete, Authorize]
         public IActionResult DeleteUsuario(string user)
         {
             ModelState.Clear();
@@ -169,7 +151,6 @@ namespace APIClient.Controllers
 
         }
 
-        [AllowAnonymous]
         private string GenerateToken(LoginModel user)
         {
 
