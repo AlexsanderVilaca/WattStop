@@ -64,7 +64,7 @@ namespace APIClient.Controllers
                 bool isLoginValid = _usuarioRepository.ValidateUsuario(user.User, user.Secret);
 
                 if (isLoginValid)
-                    return Ok("Login bem-sucedido");
+                    return Ok(GenerateToken(user));
                 else
                     return Unauthorized("Login inválido, email ou senha incorretos");
             }
