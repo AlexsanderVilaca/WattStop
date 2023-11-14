@@ -21,12 +21,14 @@ namespace APIClient.Controllers
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly IMapper _mapper;
         private readonly IConfiguration _config;
+        private readonly IHttpContextAccessor _context;
 
-        public UsuarioController(IMapper mapper, IUsuarioRepository usuarioRepository, IConfiguration config)
+        public UsuarioController(IMapper mapper, IUsuarioRepository usuarioRepository, IConfiguration config, IHttpContextAccessor context)
         {
             _config = config;
             _mapper = mapper;
             _usuarioRepository = usuarioRepository;
+            _context = context;
         }
 
         [EnableCors]
@@ -64,7 +66,10 @@ namespace APIClient.Controllers
                 bool isLoginValid = _usuarioRepository.ValidateUsuario(user.User, user.Secret);
 
                 if (isLoginValid)
-                    return Ok(GenerateToken(user));
+                {
+                    var token = GenerateToken(user);
+                    return Ok(token);
+                }
                 else
                     return Unauthorized("Login inválido, email ou senha incorretos");
             }

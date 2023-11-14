@@ -18,6 +18,10 @@ namespace DataNoSQL.DTC
         [BsonElement]
         public Guid PontoRecargaId { get; set; }
         [BsonElement]
+        public Guid UsuarioId { get; set; }
+        [BsonElement]
+        public string UsuarioNome { get; set; }
+        [BsonElement]
         public DateTime DataInclusao { get; set; }
     }
 }

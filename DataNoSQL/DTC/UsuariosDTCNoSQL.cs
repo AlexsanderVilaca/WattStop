@@ -16,11 +16,11 @@ namespace DataNoSQL.DTC
         [BsonElement]
         public string? Secret { get; set; }
         [BsonElement]
-        public DateTime DataInclusao { get; set; }
+        public DateTime DT_Criacao { get; set; }
         [BsonElement]
-        public DateTime? DataAlteracao{ get; set; }
+        public DateTime? DT_Alteracao{ get; set; }
         [BsonElement]
-        public char TipoAcesso { get; set; }
+        public char TP_Acesso { get; set; }
         [BsonElement]
         public bool Ativo { get; set; }
     }

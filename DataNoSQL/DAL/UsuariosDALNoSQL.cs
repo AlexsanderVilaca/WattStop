@@ -23,7 +23,7 @@ namespace DataNoSQL.DAL
                 query = query.Where(x => x.User.Contains(usuario));
 
             if (tipoAcesso.HasValue)
-                query = query.Where(x => x.TipoAcesso == tipoAcesso);
+                query = query.Where(x => x.TP_Acesso == tipoAcesso);
 
             if (ativo.HasValue)
                 query = query.Where(x => x.Ativo == ativo);
