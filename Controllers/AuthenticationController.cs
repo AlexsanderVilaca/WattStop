@@ -21,14 +21,12 @@ namespace APIClient.Controllers
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly IMapper _mapper;
         private readonly IConfiguration _config;
-        private readonly IHttpContextAccessor _context;
 
-        public UsuarioController(IMapper mapper, IUsuarioRepository usuarioRepository, IConfiguration config, IHttpContextAccessor context)
+        public UsuarioController(IMapper mapper, IUsuarioRepository usuarioRepository, IConfiguration config)
         {
             _config = config;
             _mapper = mapper;
             _usuarioRepository = usuarioRepository;
-            _context = context;
         }
 
         [EnableCors]
