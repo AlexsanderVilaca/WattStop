@@ -43,9 +43,12 @@ namespace DataNoSQL
         public void DropDatabase(string databaseName)
         {
             Client.DropDatabase(databaseName);
-
         }
 
+        public void DropCollection(string collecionName)
+        {
+            Database.DropCollection(collecionName);
+        }
         public string Stats()
         {
             return Database.RunCommand<BsonDocument>(new BsonDocument { { "dbstats", 1 } }).ToString();
