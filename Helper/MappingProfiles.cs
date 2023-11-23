@@ -32,7 +32,7 @@ namespace APIClient.Helper
             CreateMap<AvaliacaoDTCNoSQL, AvaliacaoModel>();
             CreateMap<EmpresaDTCNoSQL, EmpresaModel>();
             CreateMap<PontoRecargaDTCNoSQL, PontoRecargaModel>();
-            CreateMap<HistoricoPontoRecargaDTCNoSQL, HistoricoPontoRecargaDTCNoSQL>();
+            CreateMap<HistoricoPontoRecargaDTCNoSQL, HistoricoPontoRecargaDTO>();
             CreateMap<UsuariosDTCNoSQL, UsuarioModel>();
 
             CreateMap<AvaliacaoModel, AvaliacaoDTCNoSQL>();
@@ -44,7 +44,7 @@ namespace APIClient.Helper
             CreateMap<AvaliacaoDTCNoSQL, AvaliacaoDTO>();
             CreateMap<EmpresaDTCNoSQL, EmpresaDTO>();
             CreateMap<PontoRecargaDTCNoSQL, PontoRecargaDTO>();
-            CreateMap<HistoricoPontoRecargaDTCNoSQL, HistoricoPontoRecargaDTO>();
+            CreateMap<HistoricoPontoRecargaDTCNoSQL, HistoricoPontoRecargaModel>();
             CreateMap<UsuariosDTCNoSQL, UsuarioDTO>();
 
         }

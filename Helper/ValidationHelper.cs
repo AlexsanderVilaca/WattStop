@@ -1,4 +1,6 @@
-﻿namespace APIClient.Helper
+﻿using System.Text.RegularExpressions;
+
+namespace APIClient.Helper
 {
     public class ValidationHelper
     {
@@ -38,5 +40,18 @@
             return digitoVerificador == $"{digito1}{digito2}";
         }
 
+        public bool ValidarEmail(string email, out string msg)
+        {
+            msg = "";
+            string regex = @"/^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i";
+            if (Regex.IsMatch(email, regex) == false)
+            {
+                msg = "Email inválido";
+                return false;
+            }
+
+            else
+                return Regex.IsMatch(email, regex);
+        }
     }
 }

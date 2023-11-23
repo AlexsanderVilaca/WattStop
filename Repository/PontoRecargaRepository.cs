@@ -67,27 +67,37 @@ namespace APIClient.Repository
 
         public PontoRecargaModel GetPontoRecarga(Guid id)
         {
-            return _context.PontoRecarga.FirstOrDefault(x => x.Id == id);
+            var pontosRecargaDtc = _DAL.read(id:id);
+            var pontosRecarga = _mapper.Map<PontoRecargaModel>(pontosRecargaDtc);
+            return pontosRecarga;
         }
 
         public List<PontoRecargaModel> GetPontosRecarga()
         {
-            return _context.PontoRecarga.OrderBy(p => p.Id).ToList();
+            var pontosRecargaDtc = _DAL.read();
+            var pontosRecarga = _mapper.Map<List<PontoRecargaModel>>(pontosRecargaDtc);
+            return pontosRecarga;
         }
 
         public List<PontoRecargaModel> GetPontosRecargaByEmpresa(Guid empresaId)
         {
-            return _context.PontoRecarga.Where(p => p.EmpresaId == empresaId).ToList();
+            var pontosRecargaDtc = _DAL.read(empresaId: empresaId);
+            var pontosRecarga = _mapper.Map<List<PontoRecargaModel>>(pontosRecargaDtc);
+            return pontosRecarga;
         }
 
         public bool PontoRecargaEmpresaExists(Guid empresaId)
         {
-            return _context.PontoRecarga.FirstOrDefault(x => x.EmpresaId == empresaId) != null;
+            var pontosRecargaDtc = _DAL.read().FirstOrDefault(x => x.EmpresaId == empresaId);
+            var pontosRecarga = _mapper.Map<PontoRecargaModel>(pontosRecargaDtc);
+            return pontosRecarga == null ? false : true;
         }
 
         public bool PontoRecargaExists(Guid id)
         {
-            return _context.PontoRecarga.FirstOrDefault(x => x.Id == id) != null;
+            var pontosRecargaDtc = _DAL.read().FirstOrDefault(x => x.Id == id);
+            var pontosRecarga = _mapper.Map<PontoRecargaModel>(pontosRecargaDtc);
+            return pontosRecarga == null ? false : true;
         }
 
         public bool Save()

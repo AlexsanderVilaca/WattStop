@@ -81,6 +81,8 @@ namespace APIClient.Controllers
 
             if (new ValidationHelper().ValidarCNPJ(empresaCreate.CNPJ, out msg) == false)
                 ModelState.AddModelError("", "Este CNPJ não é valido. " + msg);
+            if (new ValidationHelper().ValidarEmail(empresaCreate.Email, out msg) == false)
+                ModelState.AddModelError("", msg);
 
             if (_empresaRepository.GetEmpresa(empresaCreate.CNPJ) != null)
                 ModelState.AddModelError("", "Já existe uma empresa com este CNPJ");
@@ -114,7 +116,8 @@ namespace APIClient.Controllers
 
             if (new ValidationHelper().ValidarCNPJ(empresaUpdate.CNPJ, out msg) == false)
                 ModelState.AddModelError("", "Este CNPJ não é valido. " + msg);
-
+            if (new ValidationHelper().ValidarEmail(empresaUpdate.Email, out msg) == false)
+                ModelState.AddModelError("", msg);
             var empresa = _empresaRepository.GetEmpresa(empresaUpdate.CNPJ);
 
             if (empresa != null && empresa.Id != empresaUpdate.Id)

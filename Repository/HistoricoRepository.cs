@@ -44,27 +44,37 @@ namespace APIClient.Repository
 
         public List<HistoricoPontoRecargaModel> GetHistoricoByPontoRecarga(Guid pontoRecargaId)
         {
-            return _context.HistoricoPontoRecarga.Where(x => x.PontoRecargaId == pontoRecargaId).ToList();
+            var historicoDtc = _DAL.read(pontoRecargaId: pontoRecargaId).OrderByDescending(x => x.DataHora).ToList();
+            var Log = _mapper.Map<List<HistoricoPontoRecargaModel>>(historicoDtc);
+            return Log;
         }
 
         public HistoricoPontoRecargaModel GetHistoricoPontoRecarga(Guid id)
         {
-            return _context.HistoricoPontoRecarga.FirstOrDefault(x => x.Id == id);
+            var historicoDtc = _DAL.read(id: id);
+            var Log = _mapper.Map<HistoricoPontoRecargaModel>(historicoDtc);
+            return Log;
         }
 
         public List<HistoricoPontoRecargaModel> GetHistoricoPontosRecarga()
         {
-            return _context.HistoricoPontoRecarga.OrderByDescending(x => x.DataHora).ToList();
+            var historicoDtc = _DAL.read().OrderByDescending(x => x.DataHora).ToList();
+            var Log = _mapper.Map<List<HistoricoPontoRecargaModel>>(historicoDtc);
+            return Log;
         }
 
         public bool HistoricoExists(Guid id)
         {
-            return _context.HistoricoPontoRecarga.FirstOrDefault(x => x.Id == id) != null;
+            var historicoDtc = _DAL.read(id: id);
+            var Log = _mapper.Map<List<HistoricoPontoRecargaModel>>(historicoDtc);
+            return Log.FirstOrDefault() == null ? false : true;
         }
 
         public bool HistoricoPontoExists(Guid pontoRecargaId)
         {
-            return _context.HistoricoPontoRecarga.FirstOrDefault(x => x.PontoRecargaId == pontoRecargaId) != null;
+            var historicoDtc = _DAL.read(pontoRecargaId: pontoRecargaId);
+            var Log = _mapper.Map<List<HistoricoPontoRecargaModel>>(historicoDtc);
+            return Log.FirstOrDefault() == null ? false : true;
         }
 
         public bool Save()
