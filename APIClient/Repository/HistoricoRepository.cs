@@ -42,6 +42,12 @@ namespace APIClient.Repository
             }
         }
 
+        public bool DeleteHistorico()
+        {
+            _context.HistoricoPontoRecarga.ExecuteDelete();
+            return Save();
+        }
+
         public List<HistoricoPontoRecargaModel> GetHistoricoByPontoRecarga(Guid pontoRecargaId)
         {
             var historicoDtc = _DAL.read(pontoRecargaId: pontoRecargaId).OrderByDescending(x => x.DataHora).ToList();

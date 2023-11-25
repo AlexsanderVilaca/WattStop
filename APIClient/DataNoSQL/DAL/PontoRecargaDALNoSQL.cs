@@ -26,7 +26,7 @@ namespace DataNoSQL.DAL
                 query = query.Where(x => x.Localizacao.Contains(localizacao));
 
             if (empresaId.HasValue)
-                query = query.Where(x => x.EmpresaId == empresaId);
+                query = query.Where(x => x.Empresa.Id == empresaId);
 
             return query.ToList();
 

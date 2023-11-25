@@ -5,6 +5,7 @@ using APIClient.Models;
 using AutoMapper;
 using DataNoSQL.DAL;
 using DataNoSQL.DTC;
+using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 
 namespace APIClient.Repository
@@ -28,7 +29,23 @@ namespace APIClient.Repository
                 _context.PontoRecarga.Add(pontoRecarga);
                 if (Save())
                 {
-                    var pontoRecargaMap = _mapper.Map<PontoRecargaDTCNoSQL>(pontoRecarga);
+                    var pontoRecargaMap = new PontoRecargaDTCNoSQL
+                    {
+                        Id = pontoRecarga.Id,
+                        DataInclusao = pontoRecarga.DataInclusao,
+                        Localizacao = pontoRecarga.Localizacao,
+                        TipoCarregador = pontoRecarga.TipoCarregador,
+
+                    };
+                    var empresaModel = _context.Empresa.FirstOrDefault(x => x.Id == pontoRecarga.EmpresaId);
+                    pontoRecargaMap.Empresa = new EmpresaDTCNoSQL
+                    {
+                        Id = pontoRecarga.EmpresaId,
+                        DataInclusao = empresaModel.DataInclusao,
+                        CNPJ = empresaModel.CNPJ,
+                        Email = empresaModel.Email,
+                        Nome = empresaModel.Nome,
+                    };
                     _DAL.Insert(pontoRecargaMap);
                     return true;
                 }
@@ -64,19 +81,32 @@ namespace APIClient.Repository
                 return false;
             }
         }
+        public bool DeletePontosRecarga()
+        {
+            try
+            {
+                _context.PontoRecarga.ExecuteDelete();
+                return Save();
+
+            }
+            catch (Exception error)
+            {
+                Console.WriteLine(error.Message);
+                return false;
+            }
+        }
 
         public PontoRecargaModel GetPontoRecarga(Guid id)
         {
-            var pontosRecargaDtc = _DAL.read(id:id);
+            var pontosRecargaDtc = _DAL.read(id: id);
             var pontosRecarga = _mapper.Map<PontoRecargaModel>(pontosRecargaDtc);
             return pontosRecarga;
         }
 
-        public List<PontoRecargaModel> GetPontosRecarga()
+        public List<PontoRecargaDTCNoSQL> GetPontosRecarga()
         {
             var pontosRecargaDtc = _DAL.read();
-            var pontosRecarga = _mapper.Map<List<PontoRecargaModel>>(pontosRecargaDtc);
-            return pontosRecarga;
+            return pontosRecargaDtc;
         }
 
         public List<PontoRecargaModel> GetPontosRecargaByEmpresa(Guid empresaId)
@@ -88,7 +118,7 @@ namespace APIClient.Repository
 
         public bool PontoRecargaEmpresaExists(Guid empresaId)
         {
-            var pontosRecargaDtc = _DAL.read().FirstOrDefault(x => x.EmpresaId == empresaId);
+            var pontosRecargaDtc = _DAL.read().FirstOrDefault(x => x.Empresa.Id == empresaId);
             var pontosRecarga = _mapper.Map<PontoRecargaModel>(pontosRecargaDtc);
             return pontosRecarga == null ? false : true;
         }

@@ -12,5 +12,6 @@ namespace APIClient.Interfaces
         bool HistoricoPontoExists(Guid pontoRecargaId);
         List<HistoricoPontoRecargaModel> GetHistoricoByPontoRecarga(Guid pontoRecargaId);
         bool Save();
+        bool DeleteHistorico();
     }
 }

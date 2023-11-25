@@ -47,10 +47,10 @@ namespace APIClient.Controllers
             return Ok(pontoRecarga);
         }
 
-        [HttpGet, Authorize]
+        [HttpGet,Authorize]
         public IActionResult GetPontosRecarga()
         {
-            var pontosRecarga = _mapper.Map<List<PontoRecargaDTO>>(_pontoRecargaRepository.GetPontosRecarga());
+            var pontosRecarga = _pontoRecargaRepository.GetPontosRecarga();
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 

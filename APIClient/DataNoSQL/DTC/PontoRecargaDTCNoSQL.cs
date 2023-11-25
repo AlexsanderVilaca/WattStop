@@ -14,7 +14,7 @@ namespace DataNoSQL.DTC
         [BsonElement]
         public string? TipoCarregador { get; set; }
         [BsonElement]
-        public Guid EmpresaId { get; set; }
+        public EmpresaDTCNoSQL Empresa { get; set; }
         [BsonElement]
         public string? Localizacao { get; set; }
         [BsonElement]
