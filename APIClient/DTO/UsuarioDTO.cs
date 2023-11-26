@@ -4,6 +4,7 @@
     {
         public Guid? Id { get; set; }
         public String? User { get; set; }
+        public string? NomeUsuario { get; set; }
         public String? Secret { get; set; }
         public DateTime? DT_Criacao { get; set; }
         public DateTime? DT_Alteracao { get; set; }

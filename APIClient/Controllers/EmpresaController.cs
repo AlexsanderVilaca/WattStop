@@ -81,8 +81,8 @@ namespace APIClient.Controllers
 
             if (new ValidationHelper().ValidarCNPJ(empresaCreate.CNPJ, out msg) == false)
                 ModelState.AddModelError("", "Este CNPJ não é valido. " + msg);
-            if (new ValidationHelper().ValidarEmail(empresaCreate.Email, out msg) == false)
-                ModelState.AddModelError("", msg);
+            if (empresaCreate.UsuarioId == Guid.Empty)
+                ModelState.AddModelError("","A empresa precisa ter um usuário atrelado a ela");
 
             if (_empresaRepository.GetEmpresa(empresaCreate.CNPJ) != null)
                 ModelState.AddModelError("", "Já existe uma empresa com este CNPJ");
@@ -91,9 +91,7 @@ namespace APIClient.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            EmpresaModel empresaMap = _mapper.Map<EmpresaDTO, EmpresaModel>(empresaCreate);
-
-            if (!_empresaRepository.CreateEmpresa(empresaMap))
+            if (!_empresaRepository.CreateEmpresa(empresaCreate))
             {
                 ModelState.AddModelError("", "Algo deu errado na hora de salvar");
                 return StatusCode(500, ModelState);
@@ -127,9 +125,7 @@ namespace APIClient.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            EmpresaModel empresaMap = _mapper.Map<EmpresaDTO, EmpresaModel>(empresaUpdate);
-
-            if (!_empresaRepository.UpdateEmpresa(empresaMap))
+            if (!_empresaRepository.UpdateEmpresa(empresaUpdate))
             {
                 ModelState.AddModelError("", "Algo deu errado na hora de salvar");
                 return StatusCode(500, ModelState);

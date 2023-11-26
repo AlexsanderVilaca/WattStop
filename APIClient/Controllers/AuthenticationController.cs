@@ -38,8 +38,10 @@ namespace APIClient.Controllers
                 return BadRequest("Preencha todos os dados do usuário");
             if (dto.Id.HasValue == false || dto.Id == Guid.Empty)
                 dto.Id = Guid.NewGuid();
-            if (string.IsNullOrEmpty(dto.User))
+            if (string.IsNullOrEmpty(dto.NomeUsuario))
                 return BadRequest("Preencha o nome de usuário");
+            if (string.IsNullOrEmpty(dto.User))
+                return BadRequest("Preencha o email");
             if (string.IsNullOrEmpty(dto.Secret))
                 return BadRequest("Preencha a senha");
             if (string.IsNullOrEmpty(dto.TP_Acesso))
@@ -47,14 +49,13 @@ namespace APIClient.Controllers
             if (_usuarioRepository.GetUsuario(dto.User) != null)
                 return BadRequest("Este usuário já está cadastrado");
 
-            var user = _mapper.Map<UsuarioModel>(dto);
-            if (!_usuarioRepository.CreateUsuario(user))
+            if (!_usuarioRepository.CreateUsuario(dto))
             {
                 ModelState.AddModelError("", "Algo deu errado na hora de salvar");
                 return StatusCode(500, ModelState);
             }
-            user.Secret = "";
-            return Ok(user);
+            dto.Secret = "";
+            return Ok(dto);
         }
 
         [HttpPost, AllowAnonymous]
@@ -109,7 +110,7 @@ namespace APIClient.Controllers
         {
             try
             {
-                var usuarios = _mapper.Map<List<UsuarioDTO>>(_usuarioRepository.GetUsuarios());
+                var usuarios =_usuarioRepository.GetUsuarios();
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
 

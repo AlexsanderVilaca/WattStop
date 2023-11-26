@@ -7,5 +7,6 @@
         public string? CNPJ { get; set; }
         public string? Email { get; set; }
         public DateTime DataInclusao { get; set; }
+        public Guid UsuarioId { get; set; }
     }
 }

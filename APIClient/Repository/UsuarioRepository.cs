@@ -1,10 +1,12 @@
 ﻿using APIClient.Data;
+using APIClient.DTO;
 using APIClient.Helper;
 using APIClient.Interfaces;
 using APIClient.Models;
 using AutoMapper;
 using DataNoSQL.DAL;
 using DataNoSQL.DTC;
+using Microsoft.EntityFrameworkCore.Query;
 using MongoDB.Driver;
 
 namespace APIClient.Repository
@@ -20,15 +22,17 @@ namespace APIClient.Repository
             _mapper = mapper;
             _DAL = dal;
         }
-        public bool CreateUsuario(UsuarioModel usuario)
+        public bool CreateUsuario(UsuarioDTO usuario)
         {
             try
             {
                 usuario.Secret = EncriptionHelper.EncriptaString(usuario.Secret);
-                _context.Usuario.Add(usuario);
+                _context.Usuario.Add(_mapper.Map<UsuarioDTO, UsuarioModel>(usuario));
                 if (Save())
                 {
+                    var dal = new EmpresaDALNoSQL();
                     var usuarioMap = _mapper.Map<UsuariosDTCNoSQL>(usuario);
+                    
                     _DAL.Insert(usuarioMap);
                     return true;
                 }
@@ -46,7 +50,8 @@ namespace APIClient.Repository
             try
             {
                 var user = GetUsuario(usuario);
-                _context.Usuario.Remove(_mapper.Map<UsuarioModel>(user));
+                var userDelete = _context.Usuario.FirstOrDefault(x => x.Id == user.Id);
+                _context.Usuario.Remove(userDelete);
                 if (Save())
                 {
                     _DAL.Delete(user.Id);
@@ -83,9 +88,9 @@ namespace APIClient.Repository
             var saved = _context.SaveChanges();
             return (saved > 0);
         }
-        public List<UsuarioModel> GetUsuarios()
+        public List<UsuariosDTCNoSQL> GetUsuarios()
         {
-            return _context.Usuario.OrderBy(x => x.User).ToList();
+            return _DAL.read().OrderBy(x => x.User).ToList();
         }
         public bool UpdateUsuario(UsuarioModel model)
         {
@@ -95,7 +100,7 @@ namespace APIClient.Repository
                 usuario.Secret = model.Secret;
                 usuario.Ativo = model.Ativo;
                 usuario.DT_Alteracao = DateTime.Now;
-                usuario.TP_Acesso = model.TP_Acesso[0];
+                usuario.TP_Acesso = model.TP_Acesso;
 
                 if (Save())
                 {

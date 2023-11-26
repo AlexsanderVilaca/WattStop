@@ -12,7 +12,7 @@ namespace DataNoSQL.DAL
     {
         public EmpresaDALNoSQL() : base("WattStop", EnumCollectionNoSQL.Empresa.ToString()) { }
 
-        public List<EmpresaDTCNoSQL> read(Guid? id = null, string cnpj = null, string nomeFantasia = null, string email = null)
+        public List<EmpresaDTCNoSQL> read(Guid? id = null, string cnpj = null, string nomeFantasia = null, string email = null, Guid? usuarioId = null)
         {
             var query = from q in GetCollection().AsQueryable() select q;
 
@@ -27,6 +27,9 @@ namespace DataNoSQL.DAL
             
             if (string.IsNullOrEmpty(email) == false)
                 query = query.Where(x => x.Email.Contains(email));
+
+            if (usuarioId.HasValue)
+                query = query.Where(x => x.UsuarioId == usuarioId.Value);
 
             return query.ToList();
 

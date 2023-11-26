@@ -22,8 +22,10 @@ namespace DataNoSQL.DTC
         [BsonElement]
         public DateTime? DT_Alteracao{ get; set; }
         [BsonElement]
-        public char TP_Acesso { get; set; }
+        public string TP_Acesso { get; set; }
         [BsonElement]
         public bool Ativo { get; set; }
+        [BsonElement]
+        public EmpresaDTCNoSQL? Empresa { get; set; }
     }
 }

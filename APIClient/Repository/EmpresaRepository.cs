@@ -1,4 +1,5 @@
 ﻿using APIClient.Data;
+using APIClient.DTO;
 using APIClient.Interfaces;
 using APIClient.Models;
 using AutoMapper;
@@ -21,14 +22,13 @@ namespace APIClient.Repository
             _DAL = dal;
         }
 
-        public bool CreateEmpresa(EmpresaModel empresa)
+        public bool CreateEmpresa(EmpresaDTO empresa)
         {
             try
             {
-                _context.Empresa.Add(empresa);
+                _context.Empresa.Add(_mapper.Map<EmpresaDTO, EmpresaModel>(empresa));
                 if (Save())
                 {
-
                     var empresaMap = _mapper.Map<EmpresaDTCNoSQL>(empresa);
                     _DAL.Insert(empresaMap);
                     return true;
@@ -57,18 +57,17 @@ namespace APIClient.Repository
             return _context.Empresa.FirstOrDefault(x => x.CNPJ == cnpj);
         }
 
-        public List<EmpresaModel> GetEmpresas()
+        public List<EmpresaDTCNoSQL> GetEmpresas()
         {
             var empresasDtc = _DAL.read();
-            var empresas = _mapper.Map<List<EmpresaModel>>(empresasDtc);
-            return empresas;
+            return empresasDtc;
         }
 
-        public bool UpdateEmpresa(EmpresaModel empresaModel)
+        public bool UpdateEmpresa(EmpresaDTO empresaModel)
         {
             try
             {
-                var empresa = GetEmpresa(empresaModel.Id);
+                var empresa = GetEmpresa(empresaModel.Id.Value);
                 empresa.CNPJ = empresaModel.CNPJ;
                 empresa.Email= empresaModel.Email;
                 empresa.Nome = empresaModel.Nome;
@@ -76,6 +75,7 @@ namespace APIClient.Repository
                 {
                     var filtro = Builders<EmpresaDTCNoSQL>.Filter.Eq("_id", empresaModel.Id);
                     var empresaMap = _mapper.Map<EmpresaDTCNoSQL>(empresa);
+                    empresaMap.UsuarioId = empresaModel.UsuarioId;
                     _DAL.Update(filtro, empresaMap);
                     return true;
                 }

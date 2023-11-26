@@ -12,7 +12,7 @@ namespace DataNoSQL.DAL
     {
         public UsuariosDALNoSQL() : base("WattStop", EnumCollectionNoSQL.Usuarios.ToString()) { }
 
-        public List<UsuariosDTCNoSQL> read(Guid? id = null, string usuario = null, bool? ativo = null, char? tipoAcesso = null)
+        public List<UsuariosDTCNoSQL> read(Guid? id = null, string usuario = null, bool? ativo = null, string? tipoAcesso = null)
         {
             var query = from q in GetCollection().AsQueryable() select q;
 
@@ -22,13 +22,22 @@ namespace DataNoSQL.DAL
             if (string.IsNullOrEmpty(usuario) == false)
                 query = query.Where(x => x.User.Contains(usuario));
 
-            if (tipoAcesso.HasValue)
+            if (string.IsNullOrEmpty(tipoAcesso)==false)
                 query = query.Where(x => x.TP_Acesso == tipoAcesso);
 
             if (ativo.HasValue)
                 query = query.Where(x => x.Ativo == ativo);
 
-            return query.ToList();
+            var empresaDal = new EmpresaDALNoSQL();
+            var lista = query.ToList();
+            
+
+            foreach (var item in lista)
+            {
+                item.Empresa = empresaDal.read().FirstOrDefault(x=>x.UsuarioId==item.Id);
+            }
+
+            return lista;
 
         }
     }

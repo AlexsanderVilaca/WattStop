@@ -19,6 +19,8 @@ namespace DataNoSQL.DTC
         public string? Email { get; set; }
         [BsonElement]
         public DateTime DataInclusao { get; set; }
+        [BsonElement]
+        public Guid UsuarioId { get; set; }
 
     }
 }
