@@ -46,7 +46,7 @@ namespace APIClient.Repository
             try
             {
                 var user = GetUsuario(usuario);
-                _context.Usuario.Remove(user);
+                _context.Usuario.Remove(_mapper.Map<UsuarioModel>(user));
                 if (Save())
                 {
                     _DAL.Delete(user.Id);
@@ -61,9 +61,9 @@ namespace APIClient.Repository
                 return false;
             }
         }
-        public UsuarioModel GetUsuario(string user)
+        public UsuariosDTCNoSQL GetUsuario(string user)
         {
-            return _context.Usuario.FirstOrDefault(x => x.User == user);
+            return _DAL.read(usuario:user).FirstOrDefault();
         }
         public bool ValidateUsuario(string user, string secret)
         {
@@ -95,7 +95,7 @@ namespace APIClient.Repository
                 usuario.Secret = model.Secret;
                 usuario.Ativo = model.Ativo;
                 usuario.DT_Alteracao = DateTime.Now;
-                usuario.TP_Acesso = model.TP_Acesso;
+                usuario.TP_Acesso = model.TP_Acesso[0];
 
                 if (Save())
                 {

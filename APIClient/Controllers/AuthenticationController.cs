@@ -3,6 +3,7 @@ using APIClient.Interfaces;
 using APIClient.Models;
 using APIClient.Repository;
 using AutoMapper;
+using DataNoSQL.DTC;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -65,7 +66,8 @@ namespace APIClient.Controllers
 
                 if (isLoginValid)
                 {
-                    var token = GenerateToken(user);
+                    var usuario = _usuarioRepository.GetUsuario(user.User);
+                    var token = GenerateToken(usuario);
                     return Ok("Bearer "+token);
                 }
                 else
@@ -119,7 +121,7 @@ namespace APIClient.Controllers
             }
 
         }
-        [HttpGet]
+        [HttpGet,Authorize]
         public IActionResult GetUsuario(string user)
         {
             if (!_usuarioRepository.UsuarioExists(user))
@@ -154,7 +156,7 @@ namespace APIClient.Controllers
 
         }
 
-        private string GenerateToken(LoginModel user)
+        private string GenerateToken(UsuariosDTCNoSQL user)
         {
 
             var issuer = _config["Jwt:Issuer"];
@@ -165,11 +167,13 @@ namespace APIClient.Controllers
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                new Claim("Id", Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Email, user.User),
-                new Claim(JwtRegisteredClaimNames.Jti,
-                Guid.NewGuid().ToString())
-             }),
+                    new Claim("Id", Guid.NewGuid().ToString()),
+                    new Claim(JwtRegisteredClaimNames.Email, user.User),
+                    new Claim(JwtRegisteredClaimNames.Jti,
+                Guid.NewGuid().ToString()),
+                    new Claim(JwtRegisteredClaimNames.Name, user.NomeUsuario),
+                    new Claim("TipoAcesso", user.TP_Acesso.ToString())
+                }),
                 Expires = DateTime.UtcNow.AddHours(8),
                 Issuer = issuer,
                 Audience = audience,

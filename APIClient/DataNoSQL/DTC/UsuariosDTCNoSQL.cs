@@ -12,6 +12,8 @@ namespace DataNoSQL.DTC
         [BsonId]
         public Guid Id { get; set; }
         [BsonElement]
+        public string? NomeUsuario { get; set; }
+        [BsonElement]
         public string? User { get; set; }
         [BsonElement]
         public string? Secret { get; set; }

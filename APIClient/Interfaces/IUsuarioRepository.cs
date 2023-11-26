@@ -1,4 +1,6 @@
-﻿using APIClient.Models;
+﻿using APIClient.DTO;
+using APIClient.Models;
+using DataNoSQL.DTC;
 
 namespace APIClient.Interfaces
 {
@@ -7,7 +9,7 @@ namespace APIClient.Interfaces
         bool CreateUsuario(UsuarioModel usuario);
         bool Delete(String usuario);
         bool UpdateUsuario(UsuarioModel model);
-        UsuarioModel GetUsuario(String usuario);
+        UsuariosDTCNoSQL GetUsuario(String usuario);
         bool ValidateUsuario(String usuario, String secret);
         bool UsuarioExists(String usuario);
         List<UsuarioModel> GetUsuarios();
