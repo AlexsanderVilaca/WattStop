@@ -69,7 +69,7 @@ namespace APIClient.Controllers
                 {
                     var usuario = _usuarioRepository.GetUsuario(user.User);
                     var token = GenerateToken(usuario);
-                    return Ok(new object []{ "Bearer " + token, usuario});
+                    return Ok("Bearer " + token);
                 }
                 else
                     return Unauthorized("Login inválido, email ou senha incorretos");
@@ -110,7 +110,7 @@ namespace APIClient.Controllers
         {
             try
             {
-                var usuarios =_usuarioRepository.GetUsuarios();
+                var usuarios = _usuarioRepository.GetUsuarios();
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
 
@@ -122,7 +122,7 @@ namespace APIClient.Controllers
             }
 
         }
-        [HttpGet,Authorize]
+        [HttpGet, Authorize]
         public IActionResult GetUsuario(string user)
         {
             if (!_usuarioRepository.UsuarioExists(user))
@@ -173,12 +173,13 @@ namespace APIClient.Controllers
                     new Claim(JwtRegisteredClaimNames.Jti,
                 Guid.NewGuid().ToString()),
                     new Claim(JwtRegisteredClaimNames.Name, user.NomeUsuario),
-                    new Claim("TipoAcesso", user.TP_Acesso.ToString())
+                    new Claim("TipoAcesso", user.TP_Acesso.ToString()),
+                    new Claim("EmpresaId", user.Empresa == null ? "" : user.Empresa.Id.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddHours(8),
                 Issuer = issuer,
                 Audience = audience,
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature),
             };
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
