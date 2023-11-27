@@ -69,7 +69,7 @@ namespace APIClient.Controllers
                 {
                     var usuario = _usuarioRepository.GetUsuario(user.User);
                     var token = GenerateToken(usuario);
-                    return Ok("Bearer "+token);
+                    return Ok(new object []{ "Bearer " + token, usuario});
                 }
                 else
                     return Unauthorized("Login inválido, email ou senha incorretos");
@@ -127,7 +127,7 @@ namespace APIClient.Controllers
         {
             if (!_usuarioRepository.UsuarioExists(user))
                 return NotFound();
-            var usuario = _mapper.Map<UsuarioDTO>(_usuarioRepository.GetUsuario(user));
+            var usuario = _usuarioRepository.GetUsuario(user);
             if (!ModelState.IsValid)
                 return BadRequest();
 
